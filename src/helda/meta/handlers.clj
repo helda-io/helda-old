@@ -35,9 +35,8 @@
 (defn handle [msg world]
   (let [meta (world :meta)]
      (validate msg meta)
-     (use '[helda.helpers.response])
      (if-let [handler (get-in meta [:handlers (msg :tag)])]
-      ((eval handler) msg world)
+      (handler msg world)
       nil
       )
      )
