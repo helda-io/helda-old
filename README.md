@@ -1,5 +1,7 @@
 # helda
 
+[![Build Status](https://travis-ci.org/helda-io/helda.svg?branch=master)](https://travis-ci.org/helda-io/helda)
+
 FIXME: description
 
 ## Installation
