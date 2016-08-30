@@ -7,6 +7,14 @@
 
 (def meta (create-meta))
 
+; (defn create-cli [meta storage]
+;   (save-changes storage (seed-world meta))
+;   )
+; 
+; (defn load-cli [meta storage]
+;   (load-world storage)
+;   )
+
 (def world (seed-world meta))
 
 (def sample-msg
