@@ -32,12 +32,10 @@
     )
   )
 
-(defn handle [msg world]
-  (let [meta (world :meta)]
-     (validate msg meta)
-     (if-let [handler (get-in meta [:handlers (msg :tag)])]
-      (handler msg world)
-      nil
-      )
-     )
+(defn handle [msg meta world]
+   (validate msg meta)
+   (if-let [handler (get-in meta [:handlers (msg :tag)])]
+    (handler msg world)
+    nil
+    )
   )

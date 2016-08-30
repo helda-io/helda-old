@@ -10,7 +10,7 @@
     :handler (fn [msg world] 2)
     })]
     (testing "Checking handler"
-      (is (= 2 (handle {:tag "msg.handler1"} {:meta meta})))
+      (is (= 2 (handle {:tag "msg.handler1"} meta {:meta meta})))
       )
     )
   )

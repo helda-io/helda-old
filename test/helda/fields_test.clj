@@ -35,8 +35,9 @@
     (testing "The same counts of fields in worlds as in meta"
       (is (=
         (count (meta :fields))
-        (- (count world) 1))
+        (count world)
         ))
+      )
     (testing "Checking field exist with default value"
       (is (world "account.assets.fixed") 0)
       )

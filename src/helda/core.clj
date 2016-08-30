@@ -5,7 +5,9 @@
   (:use [helda.meta.fields])
   )
 
-(def world (seed-world (create-meta)))
+(def meta (create-meta))
+
+(def world (seed-world meta))
 
 (def sample-msg
   {
@@ -19,6 +21,6 @@
   "Small demo is here for now"
   [& args]
   (println
-    (handle sample-msg world)
+    (handle sample-msg meta world)
     )
   )

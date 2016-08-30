@@ -20,8 +20,9 @@
       :credit "account.owner-equities"
       :amount 1000
     }
-    world (seed-world (create-meta))]
-      (let [changes (handle msg world)]
+    meta (create-meta)
+    world (seed-world meta)]
+      (let [changes (handle msg meta world)]
         (testing "World changes"
           (is (= 1000 (get-in changes [:world "account.assets.fixed"])))
           (is (= -1000 (get-in changes [:world "account.owner-equities"])))
