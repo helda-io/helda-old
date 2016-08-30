@@ -21,12 +21,11 @@
       :amount 1000
     }
     meta (create-meta)
-    world (seed-world meta)]
-      (let [changes (handle msg meta world)]
-        (testing "World changes"
-          (is (= 1000 (get-in changes [:world "account.assets.fixed"])))
-          (is (= -1000 (get-in changes [:world "account.owner-equities"])))
-          )
+    world (seed-world meta)
+    changes (handle msg meta world)]
+      (testing "World changes"
+        (is (= 1000 (get-in changes [:world "account.assets.fixed"])))
+        (is (= -1000 (get-in changes [:world "account.owner-equities"])))
         )
     )
   )
