@@ -1,8 +1,11 @@
 (ns helda.core
   (:gen-class)
-  (:use [helda.examples.accounting])
-  (:use [helda.meta.handlers])
-  (:use [helda.meta.fields])
+  (:require [helda.examples.accounting :as accounting])
+  (:require [helda.meta.handlers :refer [handle]])
+  (:require [helda.meta.fields :refer [seed-world]])
+  (:require [helda.adapters.core :refer :all])
+  (:require [helda.adapters.dsl :refer :all])
+  (:require [helda.storage.core :refer :all])
   )
 
 (defprotocol Engine
@@ -27,35 +30,25 @@
     )
   )
 
-  (defn create-accounting-in-memory []
-    (let [meta (create-meta)])
-    (DefaultEngine.
-      (helda.adapters.dsl.DslMsgAdapter.)
-      (helda.storage.core.WorldStorageAtom. (atom (seed-world meta)))
-      meta
-      )
+(defn create-dsl-in-memory [meta]
+  (DefaultEngine.
+    (helda.adapters.dsl.DslMsgAdapter.)
+    (helda.storage.core.WorldStorageAtom. (atom (seed-world meta)))
+    meta
     )
-
-(def meta )
-
-(defn create-cli [meta storage]
-  (save-changes storage (seed-world meta))
   )
 
-(def world (seed-world meta))
-
-(def sample-msg
-  {
-    :tag "msg.accounting-entry"
-    :debit "account.assets.fixed"
-    :credit "account.owner-equities"
-    :amount 1000
-    })
+(def sample-msg {
+  :tag "msg.accounting-entry"
+  :debit "account.assets.fixed"
+  :credit "account.owner-equities"
+  :amount 1000
+  })
 
 (defn -main
-  "Small demo is here for now"
+  "CLI"
   [& args]
-  (println
-    (handle sample-msg meta world)
+  (let [engine (create-dsl-in-memory (accounting/create-meta))]
+    (println (handle-msg engine sample-msg))
     )
   )

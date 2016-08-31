@@ -1,6 +1,8 @@
-(ns helda.adapters.dsl)
+(ns helda.adapters.dsl
+  (:require [helda.adapters.core :refer :all])
+  )
 
-(deftype DslMsgAdapter
+(deftype DslMsgAdapter []
   MsgAdapter
 
   (convert-input-msg [this msg]
@@ -8,6 +10,6 @@
     )
 
   (convert-results [this msg]
-    (msg :msg)
+    msg
     )
   )
