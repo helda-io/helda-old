@@ -34,7 +34,7 @@
   (let [world (seed-world (create-meta)) meta (create-meta)]
     (testing "The same counts of fields in worlds as in meta"
       (is (=
-        (count (meta :fields))
+        (+ 1 (count (meta :fields)))
         (count world)
         ))
       )

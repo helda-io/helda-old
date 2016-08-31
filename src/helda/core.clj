@@ -5,15 +5,42 @@
   (:use [helda.meta.fields])
   )
 
-(def meta (create-meta))
+(defprotocol Engine
+  "Application entry point"
 
-; (defn create-cli [meta storage]
-;   (save-changes storage (seed-world meta))
-;   )
-; 
-; (defn load-cli [meta storage]
-;   (load-world storage)
-;   )
+  (handle-msg [this msg] "Handle incoming msg")
+  )
+
+(deftype DefaultEngine [adapter storage meta]
+  Engine
+
+  (handle-msg [this msg]
+    (let
+      [results (handle
+        (convert-input-msg adapter msg)
+        meta
+        (load-world storage)
+      )]
+      (save-changes storage (results :world))
+      (convert-results adapter (results :msg))
+      )
+    )
+  )
+
+  (defn create-accounting-in-memory []
+    (let [meta (create-meta)])
+    (DefaultEngine.
+      (helda.adapters.dsl.DslMsgAdapter.)
+      (helda.storage.core.WorldStorageAtom. (atom (seed-world meta)))
+      meta
+      )
+    )
+
+(def meta )
+
+(defn create-cli [meta storage]
+  (save-changes storage (seed-world meta))
+  )
 
 (def world (seed-world meta))
 

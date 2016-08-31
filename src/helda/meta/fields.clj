@@ -34,7 +34,7 @@
 
 (defn seed [meta] (meta :seed))
 (defn seed-world [meta]
-  (loop [world {} fields (meta :fields) ]
+  (loop [world {:meta meta} fields (meta :fields) ]
     (if-not (empty? fields)
       (let [field (peek fields)]
         (recur
