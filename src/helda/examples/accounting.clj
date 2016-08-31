@@ -54,6 +54,7 @@
               (save "accounting-entry.list"
                 (conj (world "accounting-entry.list") msg)
                 )
+              (reply-msg {:tag "Reply"})
               )
             )
           )
