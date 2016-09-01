@@ -49,6 +49,6 @@
   "CLI"
   [& args]
   (let [engine (create-dsl-in-memory (accounting/create-meta))]
-    (println (handle-msg engine sample-msg))
+    (println (handle-msg engine "msg.accounting-entry"))
     )
   )
