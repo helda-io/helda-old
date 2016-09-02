@@ -7,24 +7,31 @@
   (if (< (count tokens) 2)
     (if (= 0 (count tokens))
       result
-      (throw (Exception. "Unexpected statement, you need to provide pairs params value"))
+      (throw (Exception.
+        "Unexpected statement, you need to provide pairs params value"))
       )
-    (recur (next (next tokens)) (assoc result (first tokens) (second tokens)))
+    (recur
+      (next (next tokens)) ;Reading next key value
+      (assoc result (first tokens) (second tokens)) ;Adding current key value
+      )
     )
   )
 
 (defn create-tokens [tokens result]
-  (if (not= (count tokens) 2)
-    (conj result (first tokens))
-    (let [rest-tokens (trim (second tokens))]
-      (if (starts-with? rest-tokens "\"")
-        (recur
-          (rest (split rest-tokens #"\"" 3))
-          (conj result (first tokens))
-          )
-        (recur
-          (split rest-tokens #" " 2)
-          (conj result (first tokens))
+  (let [token (first tokens)]
+    (if (not= (count tokens) 2)
+      ;Last value can be empty because split could add "" when cmd finished with double quote (")
+      (if (empty? (trim token)) result (conj result (first tokens)))
+      (let [rest-tokens (trim (second tokens))]
+        (if (starts-with? rest-tokens "\"")
+          (recur
+            (rest (split rest-tokens #"\"" 3)) ;we are calling rest here because split add empty string when split per double quote (")
+            (conj result (first tokens))
+            )
+          (recur
+            (split rest-tokens #" " 2)
+            (conj result (first tokens))
+            )
           )
         )
       )
