@@ -45,10 +45,21 @@
   :amount 1000
   })
 
+(def cmd-prompt "helda > ")
+
 (defn -main
   "CLI"
   [& args]
   (let [engine (create-dsl-in-memory (accounting/create-meta))]
-    (println (handle-msg engine "msg.accounting-entry"))
+    (print cmd-prompt)
+    (flush)
+    (doseq [ln (line-seq (java.io.BufferedReader. *in*))]
+      (try
+        (println (handle-msg engine ln))
+        (catch Exception e (println (str "Got error: " (.getMessage e))))
+        )
+      (print cmd-prompt)
+      (flush)
+      )
     )
   )
