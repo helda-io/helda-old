@@ -1,5 +1,5 @@
 (ns helda.adapters.dsl
-  (:require [clojure.string :refer [split starts-with? trim]])
+  (:require [clojure.string :refer [split starts-with? triml]])
   (:require [helda.adapters.core :refer :all])
   )
 
@@ -11,8 +11,8 @@
         "Unexpected statement, you need to provide pairs params value"))
       )
     (recur
-      (next (next tokens)) ;Reading next key value
-      (assoc result (first tokens) (second tokens)) ;Adding current key value
+      (next (next tokens)) ;Reading next {key value}
+      (assoc result (first tokens) (second tokens)) ;Adding current {key value}
       )
     )
   )
@@ -20,9 +20,8 @@
 (defn create-tokens [tokens result]
   (let [token (first tokens)]
     (if (not= (count tokens) 2)
-      ;Last value can be empty because split could add "" when cmd finished with double quote (")
-      (if (empty? (trim token)) result (conj result (first tokens)))
-      (let [rest-tokens (trim (second tokens))]
+      (if (empty? (triml token)) result (conj result (first tokens))) ;Last value can be empty because split could add "" when cmd finished with double quote (")
+      (let [rest-tokens (triml (second tokens))] ;We need to trim because if we split per double quote (") on previous iteration - it could add empty string as first element
         (if (starts-with? rest-tokens "\"")
           (recur
             (rest (split rest-tokens #"\"" 3)) ;we are calling rest here because split add empty string when split per double quote (")
