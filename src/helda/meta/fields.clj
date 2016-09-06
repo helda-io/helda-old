@@ -4,7 +4,7 @@
 
 (s/defschema Field{
     :field s/Str
-    :description (s/maybe s/Str)
+    (s/optional-key :description) s/Str
     :default-value s/Any
   })
 

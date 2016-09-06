@@ -2,14 +2,24 @@
   (:require [schema.core :as s])
   )
 
+(s/defschema Generator{
+    (s/optional-key :period) s/Num
+    (s/optional-key :function) s/Any
+    (s/optional-key :msg-template) {s/Keyword s/Any}
+  })
+
 (s/defschema Handler{
-    :input-msg {s/Keyword s/Str}
+    :input-msg {
+      (s/required-key :tag) s/Str
+      s/Keyword s/Str
+    }
     :handler s/Any ;function
+    (s/optional-key :generator) Generator
   })
 
 ;todo think about case when adding handler and input msg already defined
 
-(s/defn add-handler [meta handler :- Handler]
+(s/defn ^:always-validate add-handler [meta handler :- Handler]
   ;todo check to have one handler only
   (let [meta-data
     (if (meta :handlers) meta (assoc meta :handlers {} :input-table {}))
@@ -28,7 +38,7 @@
 (defn validate [msg meta]
   (let [msg-tag (msg :tag)]
     (if-not msg-tag (throw (Exception. "Msg tag should be set")))
-    (map #((eval %) msg) (get-in meta [:msg-constraints msg-tag]))
+    (map #(% msg) (get-in meta [:msg-constraints msg-tag]))
     )
   )
 
