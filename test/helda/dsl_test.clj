@@ -10,9 +10,9 @@
     "command key1 value1 key2 value2"
     )]
     (testing "Checking parsed tokens"
-      (is (= "command" (get result "tag")))
-      (is (= "value1" (get result "key1")))
-      (is (= "value2" (get result "key2")))
+      (is (= "command" (get result :tag)))
+      (is (= "value1" (get result :key1)))
+      (is (= "value2" (get result :key2)))
       )
     )
   )
@@ -23,10 +23,10 @@
     "command key0 \"123 456\" key3 v4 key1 \" key2 value2 \""
     )]
     (testing "Checking parsed tokens"
-      (is (= "command" (get result "tag")))
-      (is (= " key2 value2 " (get result "key1")))
-      (is (= "v4" (get result "key3")))
-      (is (= "123 456" (get result "key0")))
+      (is (= "command" (get result :tag)))
+      (is (= " key2 value2 " (get result :key1)))
+      (is (= "v4" (get result :key3)))
+      (is (= "123 456" (get result :key0)))
       )
     )
   )
@@ -37,10 +37,10 @@
     "command key0 \"123 456\", key3=v4, key1:\" key2 value2 \""
     )]
     (testing "Checking parsed tokens"
-      (is (= "command" (get result "tag")))
-      (is (= " key2 value2 " (get result "key1")))
-      (is (= "v4" (get result "key3")))
-      (is (= "123 456" (get result "key0")))
+      (is (= "command" (get result :tag)))
+      (is (= " key2 value2 " (get result :key1)))
+      (is (= "v4" (get result :key3)))
+      (is (= "123 456" (get result :key0)))
       )
     )
   )

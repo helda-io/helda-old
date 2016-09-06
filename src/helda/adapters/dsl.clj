@@ -14,7 +14,7 @@
       )
     (recur
       (drop 2 tokens) ;Reading next {key value}
-      (assoc result (first tokens) (second tokens)) ;Adding current {key value}
+      (assoc result (keyword (first tokens)) (second tokens)) ;Adding current {key value}
       )
     )
   )
