@@ -7,12 +7,12 @@
 (deftest basic-command-parsing
   (let [result (convert-input-msg
     (helda.adapters.dsl.DslMsgAdapter.)
-    "command key1 value1 key2 value2"
+    "command key1 value1 key2 2"
     )]
     (testing "Checking parsed tokens"
       (is (= "command" (get result :tag)))
       (is (= "value1" (get result :key1)))
-      (is (= "value2" (get result :key2)))
+      (is (= 2 (get result :key2)))
       )
     )
   )

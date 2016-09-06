@@ -5,6 +5,13 @@
 
 (def ws-regex #"[\s;:=,{}]+")
 
+(defn parse-value [value-str]
+  (try
+    (Long/parseLong value-str)
+    (catch Exception e value-str)
+    )
+  )
+
 (defn parse-params [tokens result]
   (if (< (count tokens) 2)
     (if (= 0 (count tokens))
@@ -14,7 +21,7 @@
       )
     (recur
       (drop 2 tokens) ;Reading next {key value}
-      (assoc result (keyword (first tokens)) (second tokens)) ;Adding current {key value}
+      (assoc result (keyword (first tokens)) (parse-value (second tokens)))
       )
     )
   )
