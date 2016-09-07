@@ -3,9 +3,9 @@
   )
 
 (s/defschema Generator{
-    (s/optional-key :period) s/Num
-    (s/optional-key :function) s/Any
-    (s/optional-key :msg-template) {s/Keyword s/Any}
+    :period s/Num
+    :count s/Num
+    :msg-source s/Any ;function that provides msgs
   })
 
 (s/defschema Handler{
