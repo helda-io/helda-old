@@ -1,12 +1,13 @@
 (ns helda.examples.accounting
-  (:use [helda.meta.handlers])
+  (:use [helda.meta.core])
   (:use [helda.meta.fields])
+  (:use [helda.meta.handlers])
   (:use [helda.helpers.response])
   )
 
 ; Accounting app example
 (defn create-meta []
-  (-> {}
+  (-> (init-meta "accounts")
     (add-field {
       :field "account.assets.fixed"
       :default-value 0
