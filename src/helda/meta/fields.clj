@@ -28,10 +28,6 @@
     )
   )
 
-(s/defn fields [meta] :- [s/Str] (meta :fields))
-(s/defn fields-table [meta] :- [Field] (meta :fields-table))
-(s/defn lookup-field [meta field] :- Field (get-in meta [:fields-table field]))
-
 (defn seed [meta] (meta :seed))
 (defn seed-world [meta]
   (loop [world {:meta meta} fields (meta :fields) ]
@@ -44,5 +40,16 @@
         )
       world
       )
+    )
+  )
+
+(s/defn fields [meta] :- [s/Str] (meta :fields))
+(s/defn fields-table [meta] :- [Field] (meta :fields-table))
+(s/defn lookup-field [meta field] :- Field (get-in meta [:fields-table field]))
+
+(defn init-fields-meta [meta]
+  (-> meta
+    (assoc-in [:handlers :fields-list] (fn [msg world] (fields meta)))
+    (assoc-in [:handlers :fields-table] (fn [msg world] (fields-table meta)))
     )
   )
