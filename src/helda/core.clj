@@ -14,7 +14,7 @@
   (handle-msg [this msg] "Handle incoming msg")
   )
 
-(deftype DefaultEngine [adapter storage meta]
+(deftype SingleEngine [adapter storage meta]
   Engine
 
   (handle-msg [this msg]
@@ -30,20 +30,32 @@
     )
   )
 
+(deftype Router [adapter engines]
+  Engine
+
+  (handle-msg [this msg]
+    (map convert-results adapter
+      (filter
+        (map #(handle-msg % (convert-input-msg adapter msg)) engines)
+        )
+      )
+    )
+  )
+
 (defn create-dsl-in-memory [meta]
-  (DefaultEngine.
+  (SingleEngine.
     (helda.adapters.dsl.DslMsgAdapter.)
     (helda.storage.core.WorldStorageAtom. (atom (seed-world meta)))
     meta
     )
   )
 
-(def sample-msg {
-  :tag "msg.accounting-entry"
-  :debit "account.assets.fixed"
-  :credit "account.owner-equities"
-  :amount 1000
-  })
+; (def sample-msg {
+  ; :tag "msg.accounting-entry"
+  ; :debit "account.assets.fixed"
+  ; :credit "account.owner-equities"
+  ; :amount 1000
+  ; })
 
 (def cmd-prompt "helda > ")
 
