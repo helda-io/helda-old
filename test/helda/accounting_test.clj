@@ -29,3 +29,15 @@
         )
     )
   )
+
+(deftest sys-handlers-test
+  (let [
+    meta (create-meta)
+    world (seed-world meta)
+    ]
+    (testing "Sys-handlers checking"
+      (is (= 6 (count (handle {:tag "fields-list"} meta world))))
+      (is (= 6 (count (handle {:tag "fields-table"} meta world))))
+      )
+    )
+  )
