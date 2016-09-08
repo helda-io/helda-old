@@ -49,5 +49,3 @@
     nil
     )
   )
-
-(defn init-handlers-meta [meta] meta)
