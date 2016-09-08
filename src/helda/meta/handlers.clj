@@ -46,6 +46,9 @@
    (validate msg meta)
    (if-let [handler (get-in meta [:handlers (msg :tag)])]
     (handler msg world)
-    nil
+    (if-let [sys-handler (get-in meta [:sys-handlers (msg :tag)])]
+      (sys-handler msg meta)
+      nil
+      )
     )
   )

@@ -7,11 +7,11 @@
 (defn init-meta [name]
   (-> {:name name :handlers {}}
     (assoc-in
-      [:system-handlers :fields-list]
+      [:sys-handlers :fields-list]
       (fn [msg meta] (f/fields meta))
       )
     (assoc-in
-      [:system-handlers :fields-table]
+      [:sys-handlers :fields-table]
       (fn [msg meta] (f/fields-table meta))
       )
     )
