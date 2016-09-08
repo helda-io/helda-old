@@ -1,21 +1,7 @@
 (ns helda.meta.handlers
   (:require [schema.core :as s])
+  (:require [helda.meta.schemas :refer :all])
   )
-
-(s/defschema Generator{
-    :period s/Num
-    :count s/Num
-    :msg-source s/Any ;function that provides msgs
-  })
-
-(s/defschema Handler{
-    :input-msg {
-      (s/required-key :tag) s/Str
-      s/Keyword s/Str
-    }
-    :handler s/Any ;function
-    (s/optional-key :generator) Generator
-  })
 
 ;todo think about case when adding handler and input msg already defined
 

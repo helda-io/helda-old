@@ -1,12 +1,7 @@
 (ns helda.meta.fields
   (:require [schema.core :as s])
+  (:require [helda.meta.schemas :refer :all])
   )
-
-(s/defschema Field{
-    :field s/Str
-    (s/optional-key :description) s/Str
-    :default-value s/Any
-  })
 
 (s/defn ^:always-validate add-field [meta field :- Field]
   (-> meta
