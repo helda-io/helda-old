@@ -18,4 +18,14 @@
     )
   )
 
-;todo Move all builder functions there
+(s/defn add-field [meta field :- Field]
+  (f/add-field meta field)
+  )
+
+(s/defn add-fields [meta fields :- [Field]]
+  (f/add-fields meta fields)
+  )
+
+(s/defn add-handler [meta handler :- Handler]
+  (h/add-handler meta handler)
+  )

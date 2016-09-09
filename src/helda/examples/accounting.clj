@@ -1,7 +1,5 @@
 (ns helda.examples.accounting
   (:use [helda.meta.core])
-  (:use [helda.meta.fields])
-  (:use [helda.meta.handlers])
   (:use [helda.helpers.response])
   )
 
