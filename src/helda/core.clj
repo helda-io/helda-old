@@ -34,11 +34,11 @@
   Engine
 
   (handle-msg [this msg]
-    (map convert-results adapter
+    ;(map convert-results adapter
       (filter
         (map #(handle-msg % (convert-input-msg adapter msg)) engines)
         )
-      )
+      ;)
     )
   )
 
@@ -47,6 +47,20 @@
     (helda.adapters.dsl.DslMsgAdapter.)
     (helda.storage.core.WorldStorageAtom. (atom (seed-world meta)))
     meta
+    )
+  )
+
+(defn create-dsl-router-in-memory [& meta-list]
+  (Router.
+    (helda.adapters.dsl.DslMsgAdapter.)
+    (map
+      #(SingleEngine.
+        (helda.adapters.core.SimpleMsgAdapter)
+        (helda.storage.core.WorldStorageAtom. (atom (seed-world %)))
+        %
+        )
+      meta-list
+      )
     )
   )
 
