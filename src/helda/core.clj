@@ -35,7 +35,7 @@
 
   (handle-msg [this msg]
     ;(map convert-results adapter
-      (filter
+      (remove nil?
         (map #(handle-msg % (convert-input-msg adapter msg)) engines)
         )
       ;)
@@ -55,7 +55,7 @@
     (helda.adapters.dsl.DslMsgAdapter.)
     (map
       #(SingleEngine.
-        (helda.adapters.core.SimpleMsgAdapter)
+        (helda.adapters.core.SimpleMsgAdapter.)
         (helda.storage.core.WorldStorageAtom. (atom (seed-world %)))
         %
         )
@@ -63,13 +63,6 @@
       )
     )
   )
-
-; (def sample-msg {
-  ; :tag "msg.accounting-entry"
-  ; :debit "account.assets.fixed"
-  ; :credit "account.owner-equities"
-  ; :amount 1000
-  ; })
 
 (def cmd-prompt "helda > ")
 
