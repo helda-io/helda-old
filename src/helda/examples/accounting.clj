@@ -44,11 +44,11 @@
         :amount "Money amount"
         }
       :handler (fn [msg world]
-        (let [changes {} debit (msg :debit) credit (msg :credit)
+        (let [debit-acct (msg :debit) credit-acct (msg :credit)
           amount (msg :amount)]
-          (-> changes
-            (save debit (+ (world debit) amount))
-            (save credit (- (world credit) amount))
+          (-> {}
+            (save debit-acct (+ (world debit-acct) amount))
+            (save credit-acct (- (world credit-acct) amount))
             (save "accounting-entry.list"
               (conj (world "accounting-entry.list") msg)
               )
