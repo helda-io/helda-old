@@ -1,5 +1,7 @@
 (ns helda.helpers.response)
 
+;todo add multimethods
+
 (defn reply-msg [response msg]
   (assoc response :msg msg)
   )
