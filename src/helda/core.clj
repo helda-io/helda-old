@@ -2,49 +2,14 @@
   (:gen-class)
   (:require [helda.examples.accounting :as accounting])
   (:require [helda.meta.worlds :as worlds])
-  (:require [helda.meta.handlers :refer [handle]])
   (:require [helda.meta.fields :refer [seed-world]])
   (:require [helda.adapters.core :refer :all])
   (:require [helda.adapters.dsl :refer :all])
-  (:require [helda.storage.core :refer :all])
-  )
-
-(defprotocol Engine
-  "Application entry point"
-
-  (handle-msg [this msg] "Handle incoming msg")
-  )
-
-(deftype SingleEngine [adapter storage meta]
-  Engine
-
-  (handle-msg [this msg]
-    (let
-      [results (handle
-        (convert-input-msg adapter msg)
-        meta
-        (load-world storage)
-      )]
-      (save-changes storage (results :world))
-      (convert-results adapter (results :msg))
-      )
-    )
-  )
-
-(deftype Router [adapter engines]
-  Engine
-
-  (handle-msg [this msg]
-    ;(map convert-results adapter
-      (remove nil?
-        (map #(handle-msg % (convert-input-msg adapter msg)) engines)
-        )
-      ;)
-    )
+  (:require [helda.engines :refer :all])
   )
 
 (defn create-dsl-in-memory [meta]
-  (SingleEngine.
+  (helda.engines.SingleEngine.
     (helda.adapters.dsl.DslMsgAdapter.)
     (helda.storage.core.WorldStorageAtom. (atom (seed-world meta)))
     meta
@@ -52,10 +17,10 @@
   )
 
 (defn create-dsl-router-in-memory [& meta-list]
-  (Router.
+  (helda.engines.Router.
     (helda.adapters.dsl.DslMsgAdapter.)
     (map
-      #(SingleEngine.
+      #(helda.engines.SingleEngine.
         (helda.adapters.core.SimpleMsgAdapter.)
         (helda.storage.core.WorldStorageAtom. (atom (seed-world %)))
         %
