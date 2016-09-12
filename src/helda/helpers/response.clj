@@ -1,6 +1,8 @@
 (ns helda.helpers.response)
 
-;todo add multimethods
+(defn init-response [tag]
+  {:msg {:tag tag}}
+  )
 
 (defn reply-msg [response msg]
   (assoc response :msg msg)

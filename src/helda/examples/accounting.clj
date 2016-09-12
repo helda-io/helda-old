@@ -46,13 +46,12 @@
       :handler (fn [msg world]
         (let [debit-acct (msg :debit) credit-acct (msg :credit)
           amount (msg :amount)]
-          (-> {}
+          (-> (init-response "Reply")
             (save debit-acct (+ (world debit-acct) amount))
             (save credit-acct (- (world credit-acct) amount))
             (save "accounting-entry.list"
               (conj (world "accounting-entry.list") msg)
               )
-            (reply-msg {:tag "Reply"})
             )
           )
         )

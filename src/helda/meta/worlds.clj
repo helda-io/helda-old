@@ -35,7 +35,7 @@
         :worlds-description "World description"
         }
       :handler (fn [msg world]
-        (-> {}
+        (-> (init-response :world-meta-reply)
           (save :worlds-list (conj (world :worlds-list) (msg :world-name)))
           (save
             :worlds-description
