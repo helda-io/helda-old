@@ -14,7 +14,7 @@
     (add-field {
       :field :worlds-description
       :default-value {}
-      :description "Worlds description"
+      :description "Worlds description per key"
       })
 
     (add-handler {
@@ -31,9 +31,21 @@
     (add-handler {
       :input-msg {
         :tag "add-world"
+        :world-name "World name"
+        :worlds-description "World description"
         }
       :handler (fn [msg world]
-        ;todo add handler body
+        (-> {}
+          (save :worlds-list (conj (world :worlds-list) (msg :world-name)))
+          (save
+            :worlds-description
+            (assoc
+              (world :worlds-description)
+              (msg :world-name)
+              (msg :worlds-description)
+              )
+            )
+          )
         )
       })
     )

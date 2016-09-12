@@ -1,6 +1,7 @@
 (ns helda.core
   (:gen-class)
   (:require [helda.examples.accounting :as accounting])
+  (:require [helda.meta.worlds :as worlds])
   (:require [helda.meta.handlers :refer [handle]])
   (:require [helda.meta.fields :refer [seed-world]])
   (:require [helda.adapters.core :refer :all])
@@ -59,6 +60,7 @@
         (helda.storage.core.WorldStorageAtom. (atom (seed-world %)))
         %
         )
+      ;(conj meta-list (worlds/create-meta))
       meta-list
       )
     )

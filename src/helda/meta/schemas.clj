@@ -3,7 +3,7 @@
   )
 
 (s/defschema Field{
-    :field s/Str
+    :field s/Any ;todo change to symbol
     (s/optional-key :description) s/Str
     :default-value s/Any
   })
