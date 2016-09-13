@@ -25,8 +25,7 @@
         (helda.storage.core.WorldStorageAtom. (atom (seed-world %)))
         %
         )
-      ;(conj meta-list (worlds/create-meta))
-      meta-list
+      (conj meta-list (worlds/create-meta))
       )
     )
   )

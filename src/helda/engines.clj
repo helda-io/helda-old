@@ -20,8 +20,12 @@
         meta
         (load-world storage)
       )]
-      (save-changes storage (results :world))
-      (convert-results adapter (results :msg))
+      (if results
+        (do
+          (save-changes storage (results :world))
+          (convert-results adapter (results :msg))
+          )
+        )
       )
     )
   )
