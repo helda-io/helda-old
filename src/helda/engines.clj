@@ -34,9 +34,11 @@
   Engine
 
   (handle-msg [this msg]
-    (map #(convert-results adapter %)
-      (remove nil?
-        (map #(handle-msg % (convert-input-msg adapter msg)) engines)
+    (doall
+      (map #(convert-results adapter %)
+        (remove nil?
+          (map #(handle-msg % (convert-input-msg adapter msg)) engines)
+          )
         )
       )
     )

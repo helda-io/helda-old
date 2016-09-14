@@ -20,7 +20,7 @@
   (let [
     engine (create-dsl-router-in-memory (accounting/create-meta))
     result (do
-      (first (handle-msg engine "add-world world-name \"accounts\" worlds-description \"Simple accounting app example\""))
+      (handle-msg engine "add-world world-name \"accounts\" worlds-description \"Simple accounting app example\"")
       (first (handle-msg engine "worlds"))
       )
     ]
