@@ -11,7 +11,7 @@
 (s/defschema Generator{
     :period s/Num
     :count s/Num
-    :msg-source s/Any ;function that provides msgs
+    :msg-source (s/make-fn-schema s/Any [[]]) ;function that provides msgs
   })
 
 (s/defschema Handler{
