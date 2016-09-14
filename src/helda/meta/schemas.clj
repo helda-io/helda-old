@@ -9,7 +9,7 @@
   })
 
 (s/defschema Message{
-    :tag s/Str ;todo change to keyword
+    (s/required-key :tag) s/Str ;todo change to keyword
     s/Keyword s/Any
   })
 
@@ -17,10 +17,15 @@
     s/Keyword s/Any
   })
 
+(s/defschema Response{
+    :msg Message
+    (s/optional-key :world) World
+  })
+
 (s/defschema Generator{
     :period s/Num
     :count s/Num
-    :msg-source (s/=> s/Any []) ;function that provides msgs
+    :msg-source (s/=> Message []) ;function that provides msgs
   })
 
 (s/defschema Handler{
@@ -28,7 +33,7 @@
       (s/required-key :tag) s/Str
       s/Keyword s/Str ;description
     }
-    :handler (s/=> s/Any [Message World])
+    :handler (s/=> Response [Message World])
     (s/optional-key :generator) Generator
-    (s/optional-key :validator) (s/=> s/Any [Message])
+    (s/optional-key :validator) (s/=> (s/maybe Message) [Message])
   })
