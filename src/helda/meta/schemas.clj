@@ -17,8 +17,9 @@
 (s/defschema Handler{
     :input-msg {
       (s/required-key :tag) s/Str
-      s/Keyword s/Str
+      s/Keyword s/Str ;description
     }
-    :handler s/Any ;function
+    :handler (s/make-fn-schema s/Any [[s/Any s/Any]]) ;function [msg world]
     (s/optional-key :generator) Generator
+    (s/optional-key :validator) (s/make-fn-schema s/Any [[s/Any]]); function [msg]
   })
