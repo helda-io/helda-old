@@ -1,17 +1,25 @@
-(ns helda.helpers.response)
+(ns helda.helpers.response
+  (:require [schema.core :as s])
+  (:require [helda.meta.schema :refer :all])
+  )
 
-(defn init-response [tag]
+(s/defn init-response :- Response [tag :- s/Keyword]
   {:msg {:tag tag}}
   )
 
-(defn reply-msg [response msg]
+(s/defn reply-msg :- Response [response :- Response msg :- Message]
   (assoc response :msg msg)
   )
 
-(defn reply-field [response key value]
+(s/defn reply-field :- Response
+  [
+    response :- Response
+    key :- s/Keyword
+    value :- s/Any
+    ]
   (assoc-in response [:msg key] value)
   )
 
-(defn save [response key value]
+(s/defn save :- Response [response :- Response key :- s/Keyword value :- s/Any]
   (assoc-in response [:world key] value)
   )
