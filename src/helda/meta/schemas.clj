@@ -38,7 +38,8 @@
     (s/optional-key :validator) (s/=> (s/maybe Message) [Message])
   })
 
-  (s/defschema Meta{
-    :fields {s/Keyword Field}
-    :handlers {s/Keyword Handler}
-    })
+(s/defschema Meta{
+  :name s/Keyword
+  :fields {s/Keyword Field}
+  :handlers {s/Keyword Handler}
+  })
