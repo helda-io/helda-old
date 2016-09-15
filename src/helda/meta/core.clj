@@ -18,14 +18,14 @@
     )
   )
 
-(s/defn add-field [meta field :- Field]
+(s/defn add-field [meta :- Meta field :- Field]
   (f/add-field meta field)
   )
 
-(s/defn add-fields [meta fields :- [Field]]
+(s/defn add-fields [meta :- Meta fields :- [Field]]
   (f/add-fields meta fields)
   )
 
-(s/defn add-handler [meta handler :- Handler]
+(s/defn add-handler [meta :- Meta handler :- Handler]
   (h/add-handler meta handler)
   )

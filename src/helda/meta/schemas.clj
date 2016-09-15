@@ -8,6 +8,11 @@
     :default-value s/Any
   })
 
+(s/defschema Meta{
+  :fields {s/Str Field}
+
+  })
+
 (s/defschema Message{
     (s/required-key :tag) s/Str ;todo change to keyword
     s/Keyword s/Any

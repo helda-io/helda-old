@@ -3,9 +3,7 @@
   (:require [helda.meta.schemas :refer :all])
   )
 
-;todo think about case when adding handler and input msg already defined
-
-(s/defn ^:always-validate add-handler [meta handler :- Handler]
+(s/defn ^:always-validate add-handler [meta :- Meta handler :- Handler]
   ;todo check to have one handler only
   (let [meta-data
     (if (meta :handlers) meta (assoc meta :handlers {} :input-table {}))
