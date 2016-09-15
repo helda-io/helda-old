@@ -42,4 +42,5 @@
   :name s/Keyword
   :fields {s/Keyword Field}
   :handlers {s/Keyword Handler}
+  :sys-handlers {s/Keyword (s/=> Message [Message Meta])}
   })

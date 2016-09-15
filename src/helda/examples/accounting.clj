@@ -5,7 +5,7 @@
 
 ; Accounting app example
 (defn create-meta []
-  (-> (init-meta "accounts")
+  (-> (init-meta :accounts)
     (add-field {
       :field :account-assets-fixed
       :default-value 0

@@ -34,7 +34,7 @@
 (deftest syntax-sugar
   (let [result (convert-input-msg
     (helda.adapters.dsl.DslMsgAdapter.)
-    "command key0 \"123 456\", key3=v4, key1:\" key2 value2 \""
+    "command key0 \"123 456\", key3=v4, key1=\" key2 value2 \""
     )]
     (testing "Checking parsed tokens"
       (is (= "command" (get result :tag)))

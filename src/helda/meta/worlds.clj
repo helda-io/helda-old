@@ -5,7 +5,7 @@
 
 ; Worlds meta-info app
 (defn create-meta []
-  (-> (init-meta "worlds-meta")
+  (-> (init-meta :worlds-meta)
     (add-field {
       :field :worlds-list
       :default-value []
@@ -19,7 +19,7 @@
 
     (add-handler {
       :input-msg {
-        :tag "worlds"
+        :tag :worlds
         }
       :handler (fn [msg world]
         (reply-msg {} {
@@ -30,7 +30,7 @@
       })
     (add-handler {
       :input-msg {
-        :tag "add-world"
+        :tag :add-world
         :world-name "World name"
         :worlds-description "World description"
         }

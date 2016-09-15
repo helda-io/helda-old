@@ -3,7 +3,7 @@
   (:require [helda.adapters.core :refer :all])
   )
 
-(def ws-regex #"[\s;:=,{}]+")
+(def ws-regex #"[\s;=,{}]+")
 
 (defn parse-value [value-str]
   (try

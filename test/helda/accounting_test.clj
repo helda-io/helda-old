@@ -15,17 +15,17 @@
 (deftest handler-test
   (let
     [msg {
-      :tag "msg.accounting-entry"
-      :debit "account.assets.fixed"
-      :credit "account.owner-equities"
+      :tag :accounting-entry
+      :debit :account-assets-fixed
+      :credit :account-owner-equities
       :amount 1000
     }
     meta (create-meta)
     world (seed-world meta)
     changes (handle msg meta world)]
       (testing "World changes"
-        (is (= 1000 (get-in changes [:world "account.assets.fixed"])))
-        (is (= -1000 (get-in changes [:world "account.owner-equities"])))
+        (is (= 1000 (get-in changes [:world :account-assets-fixed])))
+        (is (= -1000 (get-in changes [:world :account-owner-equities])))
         )
     )
   )
@@ -36,8 +36,8 @@
     world (seed-world meta)
     ]
     (testing "Sys-handlers checking"
-      (is (= 6 (count (handle {:tag "fields-list"} meta world))))
-      (is (= 6 (count (handle {:tag "fields-table"} meta world))))
+      (is (= 6 (count (handle {:tag :fields-list} meta world))))
+      (is (= 6 (count (handle {:tag :fields-table} meta world))))
       )
     )
   )
