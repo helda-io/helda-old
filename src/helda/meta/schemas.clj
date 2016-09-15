@@ -3,18 +3,13 @@
   )
 
 (s/defschema Field{
-    :field s/Any ;todo change to keyword
+    :name s/Keyword
     (s/optional-key :description) s/Str
     :default-value s/Any
   })
 
-(s/defschema Meta{
-  :fields {s/Str Field}
-
-  })
-
 (s/defschema Message{
-    (s/required-key :tag) s/Str ;todo change to keyword
+    (s/required-key :tag) s/Keyword
     s/Keyword s/Any
   })
 
@@ -35,10 +30,15 @@
 
 (s/defschema Handler{
     :input-msg {
-      (s/required-key :tag) s/Str
+      (s/required-key :tag) s/Keyword
       s/Keyword s/Str ;description
     }
     :handler (s/=> Response [Message World])
     (s/optional-key :generator) Generator
     (s/optional-key :validator) (s/=> (s/maybe Message) [Message])
   })
+
+  (s/defschema Meta{
+    :fields {s/Keyword Field}
+    :handlers {s/Keyword Handler}
+    })
