@@ -37,8 +37,8 @@
       :description "List of accounting entries"
       })
     (add-handler {
+      :tag :accounting-entry
       :input-msg {
-        :tag :accounting-entry
         :debit "Debit account field name"
         :credit "Credit account field name"
         :amount "Money amount"

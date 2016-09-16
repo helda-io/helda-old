@@ -4,19 +4,7 @@
   )
 
 (s/defn ^:always-validate add-handler :- Meta [meta :- Meta handler :- Handler]
-  ;todo check to have one handler only
-  (let [meta-data
-    (if (meta :handlers) meta (assoc meta :handlers {} :input-table {}))
-    ]
-    (-> meta-data
-      (assoc-in [:handlers (get-in handler [:input-msg :tag])]
-        (handler :handler)
-        )
-      (assoc-in [:input-table (get-in handler [:input-msg :tag])]
-        (handler :input-msg)
-        )
-      )
-    )
+  (assoc-in meta [:handlers (handler :tag)] handler)
   )
 
 (defn validate [msg meta]
@@ -30,7 +18,7 @@
   (when (or (not (msg :world)) (= (msg :world) (meta :name)))
     (validate msg meta)
     (if-let [handler (get-in meta [:handlers (msg :tag)])]
-      (handler msg world)
+      ((handler :handler) msg world)
       (if-let [sys-handler (get-in meta [:sys-handlers (msg :tag)])]
         (sys-handler msg meta)
         nil

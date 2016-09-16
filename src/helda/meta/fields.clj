@@ -27,11 +27,11 @@
   (get-in meta [:fields field]))
 
 (s/defn ^:always-validate seed-world :- World [meta :- Meta]
-  (loop [world {} fields (val (meta :fields))]
+  (loop [world {} fields (vec (vals (meta :fields)))]
     (if-not (empty? fields)
       (let [field (peek fields)]
         (recur
-          (assoc world (field :field) (field :default-value))
+          (assoc world (field :name) (field :default-value))
           (pop fields)
           )
         )

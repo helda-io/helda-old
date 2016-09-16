@@ -29,8 +29,8 @@
   })
 
 (s/defschema Handler{
+    :tag s/Keyword
     :input-msg {
-      (s/required-key :tag) s/Keyword
       s/Keyword s/Str ;description
     }
     :handler (s/=> Response [Message World])
