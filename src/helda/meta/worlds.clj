@@ -7,19 +7,19 @@
 (defn create-meta []
   (-> (init-meta :worlds-meta)
     (add-field {
-      :field :worlds-list
+      :name :worlds-list
       :default-value []
       :description "List of worlds"
       })
     (add-field {
-      :field :worlds-description
+      :name :worlds-description
       :default-value {}
       :description "Worlds description per key"
       })
 
     (add-handler {
+      :tag :worlds
       :input-msg {
-        :tag :worlds
         }
       :handler (fn [msg world]
         (reply-msg {} {
@@ -29,8 +29,8 @@
         )
       })
     (add-handler {
+      :tag :add-world
       :input-msg {
-        :tag :add-world
         :world-name "World name"
         :worlds-description "World description"
         }
