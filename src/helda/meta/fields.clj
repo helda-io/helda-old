@@ -19,7 +19,7 @@
     )
   )
 
-(s/defn ^:always-validate fields :- [s/Str] [meta :- Meta]
+(s/defn ^:always-validate fields :- [s/Keyword] [meta :- Meta]
   (keys (meta :fields)))
 (s/defn ^:always-validate fields-table :- [Field] [meta :- Meta]
   (vals (meta :fields)))

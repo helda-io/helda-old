@@ -8,7 +8,7 @@
   (let [meta (create-meta)]
     (testing "There are some fields" (is (> (count (meta :fields)) 0)))
     (testing "Checking field exist"
-      (is (= 1 (count (filter #(= % "account.assets.fixed")(meta :fields))))))
+      (is (= 1 (count (filter #(= % :account-assets-fixed)(keys (meta :fields)))))))
     )
   )
 
