@@ -7,32 +7,32 @@
 (defn create-meta []
   (-> (init-meta :accounts)
     (add-field {
-      :field :account-assets-fixed
+      :name :account-assets-fixed
       :default-value 0
       :description "Fixed Assets"
       })
     (add-field {
-      :field :account-assets-cache
+      :name :account-assets-cache
       :default-value 0
       :description "Cache"
       })
     (add-field {
-      :field :account-assets-bank
+      :name :account-assets-bank
       :default-value 0
       :description "Bank"
       })
     (add-field {
-      :field :account-liabilites
+      :name :account-liabilites
       :default-value 0
       :description "Company liabilites"
       })
     (add-field {
-      :field :account-owner-equities
+      :name :account-owner-equities
       :default-value 0
       :description "Company owner equities"
       })
     (add-field {
-      :field :accounting-entry-list
+      :name :accounting-entry-list
       :default-value []
       :description "List of accounting entries"
       })

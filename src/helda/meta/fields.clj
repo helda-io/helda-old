@@ -3,11 +3,11 @@
   (:require [helda.meta.schemas :refer :all])
   )
 
-(s/defn ^:always-validate add-field [meta :- Meta field :- Field]
-  (assoc-in meta [:fields (field :field)] field)
+(s/defn ^:always-validate add-field :- Meta [meta :- Meta field :- Field]
+  (assoc-in meta [:fields (field :name)] field)
   )
 
-(s/defn ^:always-validate add-fields [meta :- Meta fields :- [Field]]
+(s/defn ^:always-validate add-fields :- Meta [meta :- Meta fields :- [Field]]
   (loop [fields-list fields res meta]
     (if-not (empty? fields-list)
       (recur

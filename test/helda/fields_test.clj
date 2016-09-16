@@ -1,12 +1,13 @@
 (ns helda.fields-test
   (:require [clojure.test :refer :all]
             [helda.examples.accounting :refer :all]
-            [helda.meta.fields :refer :all]
+            [helda.meta.core :refer :all]
+            [helda.meta.fields :refer [seed-world]]
             ))
 
 (deftest add-field-test
-  (let [meta (add-field {}
-    {:field :name-first-name :default-value "N/A" :description "First name"})]
+  (let [meta (add-field (init-meta :example)
+    {:name :name-first-name :default-value "N/A" :description "First name"})]
     (testing "Field was added"
       (is (= 1 (count (filter #(= % :name-first-name)(meta :fields)))))
       (is (= "N/A" (get-in meta [:seed :name-first-name])))
@@ -16,9 +17,9 @@
   )
 
 (deftest add-fields-test
-  (let [meta (add-fields {}
-    [{:field :address-city :default-value "N/A" :description "City"}
-    {:field :address-street :default-value "N/A" :description "Address"}])]
+  (let [meta (add-fields (init-meta :example)
+    [{:name :address-city :default-value "N/A" :description "City"}
+    {:name :address-street :default-value "N/A" :description "Address"}])]
     (testing "Fields were added"
       (is (= 1 (count (filter #(= % :address-city)(meta :fields)))))
       (is (= "N/A" (get-in meta [:seed :address-city])))

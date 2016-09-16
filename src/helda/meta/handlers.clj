@@ -3,7 +3,7 @@
   (:require [helda.meta.schemas :refer :all])
   )
 
-(s/defn ^:always-validate add-handler [meta :- Meta handler :- Handler]
+(s/defn ^:always-validate add-handler :- Meta [meta :- Meta handler :- Handler]
   ;todo check to have one handler only
   (let [meta-data
     (if (meta :handlers) meta (assoc meta :handlers {} :input-table {}))
