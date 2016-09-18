@@ -10,7 +10,7 @@
   })
 
 (defschema Message{
-    (s/required-key :tag) s/Keyword
+    :tag s/Keyword
     s/Keyword s/Any
   })
 
@@ -32,10 +32,12 @@
 (defschema Handler{
     :tag s/Keyword
     :input-msg {
-      s/Keyword s/Str ;description
+      s/Keyword s/Str
     }
     :handler (=> Response [Message World])
+    (s/optional-key :msg-schema) s/Any; Input msg schema
     (s/optional-key :generator) Generator
+    (s/optional-key :coerce) (=> Message [Message])
     (s/optional-key :validator) (=> (s/maybe Message) [Message])
   })
 
