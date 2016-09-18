@@ -7,7 +7,10 @@
 
 (defn parse-value [value-str]
   (try
-    (Long/parseLong value-str)
+    (if (re-matches #"[a-zA-Z][\w\\-]+" value-str)
+      (keyword value-str)
+      (Long/parseLong value-str)
+    )
     (catch Exception e value-str)
     )
   )
