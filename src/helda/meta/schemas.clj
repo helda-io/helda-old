@@ -3,15 +3,6 @@
   (:require [schema.core :refer [defschema => optional-key maybe]])
   )
 
-(defschema Field{
-    :name s/Keyword
-    (optional-key :description) s/Str
-    :default-value s/Any
-    (optional-key :schema) s/Any
-    ;second parameter is schema (if provided)
-    (optional-key :validator) (=> Message [Message s/Any])
-  })
-
 (defschema Message{
     :tag s/Keyword
     s/Keyword s/Any
@@ -24,6 +15,15 @@
 (defschema Response{
     :msg Message
     (optional-key :world) World
+  })
+
+(defschema Field{
+    :name s/Keyword
+    (optional-key :description) s/Str
+    :default-value s/Any
+    (optional-key :schema) s/Any
+    ;second parameter is schema (if provided)
+    (optional-key :validator) (=> Message [Response s/Any])
   })
 
 (defschema Generator{
