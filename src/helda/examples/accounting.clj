@@ -1,6 +1,7 @@
 (ns helda.examples.accounting
   (:use [helda.meta.core])
   (:use [helda.helpers.response])
+  (:require [schema.core :as s])
   )
 
 ; Accounting app example
@@ -10,31 +11,37 @@
       :name :account-assets-fixed
       :default-value 0
       :description "Fixed Assets"
+      :schema s/Num
       })
     (add-field {
       :name :account-assets-cache
       :default-value 0
       :description "Cache"
+      :schema s/Num
       })
     (add-field {
       :name :account-assets-bank
       :default-value 0
       :description "Bank"
+      :schema s/Num
       })
     (add-field {
       :name :account-liabilites
       :default-value 0
       :description "Company liabilites"
+      :schema s/Num
       })
     (add-field {
       :name :account-owner-equities
       :default-value 0
       :description "Company owner equities"
+      :schema s/Num
       })
     (add-field {
       :name :accounting-entry-list
       :default-value []
       :description "List of accounting entries"
+      :schema s/Str
       })
     (add-handler {
       :tag :accounting-entry
@@ -42,6 +49,12 @@
         :debit "Debit account field name"
         :credit "Credit account field name"
         :amount "Money amount"
+        }
+      :msg-schema {
+        :tag s/Keyword
+        :debit s/Keyword
+        :credit s/Keyword
+        :amount s/Num
         }
       :handler (fn [msg world]
         (let [debit-acct (msg :debit) credit-acct (msg :credit)
