@@ -7,6 +7,9 @@
     :name s/Keyword
     (optional-key :description) s/Str
     :default-value s/Any
+    (optional-key :schema) s/Any
+    ;second parameter is schema (if provided)
+    (optional-key :validator) (=> Message [Message s/Any])
   })
 
 (defschema Message{
