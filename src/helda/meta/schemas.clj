@@ -1,11 +1,11 @@
 (ns helda.meta.schemas
   (:require [schema.core :as s])
-  (:require [schema.core :refer [defschema =>]])
+  (:require [schema.core :refer [defschema => optional-key maybe]])
   )
 
 (defschema Field{
     :name s/Keyword
-    (s/optional-key :description) s/Str
+    (optional-key :description) s/Str
     :default-value s/Any
   })
 
@@ -20,7 +20,7 @@
 
 (defschema Response{
     :msg Message
-    (s/optional-key :world) World
+    (optional-key :world) World
   })
 
 (defschema Generator{
@@ -33,14 +33,24 @@
 
 (defschema Handler{
     :tag s/Keyword
+    (optional-key :description) s/Str
     :input-msg {
       s/Keyword s/Str
     }
+    (optional-key :examples) [Message]
     :handler (=> Response [Message World])
-    (s/optional-key :msg-schema) s/Any; Input msg schema
-    (s/optional-key :generator) Generator
-    (s/optional-key :coerce) (=> Message [Message s/Any]);second arg is schema (msg-schema)
-    (s/optional-key :validator) (=> (s/maybe Message) [Message s/Any]);second arg is schema (msg-schema)
+    (optional-key :msg-schema) s/Any; Input msg schema
+    (optional-key :generator) Generator
+    (optional-key :coerce) (=> Message [Message s/Any]);second arg is schema (msg-schema)
+    (optional-key :validator) (=> (maybe Message) [Message s/Any]);second arg is schema (msg-schema)
+  })
+
+(defschema WorldFixture{
+  :tag s/Keyword
+  (optional-key :description) s/Str
+  :field-values {
+    s/Keyword s/Any
+    }
   })
 
 (defschema Meta{
@@ -48,4 +58,5 @@
   :fields {s/Keyword Field}
   :handlers {s/Keyword Handler}
   :sys-handlers {s/Keyword (=> Message [Message Meta])}
+  :fixtures {s/Keyword WorldFixture}
   })
