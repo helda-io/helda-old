@@ -5,13 +5,14 @@
 
 (def ws-regex #"[\s;=,{}]+")
 
-(defn parse-value [value-str]
-  (try
-    (if (re-matches #"[a-zA-Z][\w\\-]+" value-str)
+(defn parse-key-value [result-map key-str value-str]
+  (assoc
+    result-map
+    (keyword key-str)
+    (if (or (= key-str "tag") (= key-str "world"))
       (keyword value-str)
-      (Long/parseLong value-str)
-    )
-    (catch Exception e value-str)
+      value-str
+      )
     )
   )
 
@@ -24,7 +25,7 @@
       )
     (recur
       (drop 2 tokens) ;Reading next {key value}
-      (assoc result (keyword (first tokens)) (parse-value (second tokens)))
+      (parse-key-value result (first tokens) (second tokens))
       )
     )
   )

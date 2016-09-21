@@ -11,6 +11,7 @@
     (testing "Type transformation expected"
       (is (= 123 (res :num)))
       (is (= "entropy" (res :hi)))
+      (is (= "world" (res :hello)))
       )
     )
   )

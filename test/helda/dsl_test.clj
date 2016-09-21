@@ -11,8 +11,8 @@
     )]
     (testing "Checking parsed tokens"
       (is (= :command (get result :tag)))
-      (is (= :value1 (get result :key1)))
-      (is (= 2 (get result :key2)))
+      (is (= "value1" (get result :key1)))
+      (is (= "2" (get result :key2)))
       )
     )
   )
@@ -25,7 +25,7 @@
     (testing "Checking parsed tokens"
       (is (= :command (get result :tag)))
       (is (= " key2 value2 " (get result :key1)))
-      (is (= :v4 (get result :key3)))
+      (is (= "v4" (get result :key3)))
       (is (= "123 456" (get result :key0)))
       )
     )
@@ -39,7 +39,7 @@
     (testing "Checking parsed tokens"
       (is (= :command (get result :tag)))
       (is (= " key2 value2 " (get result :key1)))
-      (is (= :v4 (get result :key3)))
+      (is (= "v4" (get result :key3)))
       (is (= "123 456" (get result :key0)))
       )
     )

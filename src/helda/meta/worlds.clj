@@ -1,6 +1,7 @@
 (ns helda.meta.worlds
   (:use [helda.meta.core])
   (:use [helda.helpers.response])
+  (:require [schema.core :as s])
   )
 
 ; Worlds meta-info app
@@ -34,6 +35,11 @@
         :world-name "World name"
         :worlds-description "World description"
         }
+      :msg-schema {
+        :tag s/Keyword
+        :world-name s/Keyword
+        :worlds-description s/Str
+      }
       :handler (fn [msg world]
         (-> (init-response :world-meta-reply)
           (save :worlds-list (conj (world :worlds-list) (msg :world-name)))

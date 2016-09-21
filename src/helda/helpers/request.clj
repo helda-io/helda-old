@@ -1,14 +1,23 @@
 (ns helda.helpers.request
   (:require [schema.core :as s])
+  (:require [schema.utils :as su])
   (:require [schema.coerce :as coerce])
   (:require [helda.meta.schemas :refer :all])
   )
 
 (s/defn coerce :- Message [msg :- Message schema]
-  ((coerce/coercer schema coerce/string-coercion-matcher) msg)
+  (if schema
+    (let [res ((coerce/coercer schema coerce/string-coercion-matcher) msg)]
+      (if (su/error? res)
+        (throw (Exception. (str "Msg coercion failed: " (su/error-val res))))
+        res
+        )
+      )
+    msg
+    )
   )
 
 ; you don't need validation if you did coercion
 (s/defn validate-schema [msg :- Message schema]
-  (s/validate schema msg)
+  (if schema (s/validate schema msg) msg)
   )
