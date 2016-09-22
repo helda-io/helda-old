@@ -29,9 +29,7 @@
 (defschema Generator{
     :period s/Num
     :count s/Num
-    ;Function that provides msgs (get schema as param, can be nil if not set
-    ;Handler.msg-schema)
-    :msg-source (=> Message [s/Any])
+    :msg-source (=> Message [])
   })
 
 (defschema Handler{
@@ -45,7 +43,7 @@
     (optional-key :msg-schema) s/Any; Input msg schema
     (optional-key :generator) Generator
     (optional-key :coerce) (=> Message [Message s/Any]);second arg is schema (msg-schema)
-    (optional-key :validator) (=> (maybe Message) [Message s/Any]);second arg is schema (msg-schema)
+    (optional-key :validator) (=> (maybe Message) [Message])
   })
 
 (defschema WorldFixture{

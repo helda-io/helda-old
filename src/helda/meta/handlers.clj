@@ -15,11 +15,19 @@
     )
   )
 
+(defn validate-msg [handler msg]
+  (if (handler :validator)
+    ((handler :validator) msg)
+    msg
+    )
+  )
+
 (defn handle [msg meta world]
   (if-not (msg :tag) (throw (Exception. "Msg tag should be set")))
   (when (or (not (msg :world)) (= (msg :world) (meta :name)))
     (if-let [handler (get-in meta [:handlers (msg :tag)])]
-      ((handler :handler) (coerce-msg handler msg) world)
+      ;todo organize as pipeline
+      ((handler :handler) (validate-msg handler (coerce-msg handler msg)) world)
       (if-let [sys-handler (get-in meta [:sys-handlers (msg :tag)])]
         (sys-handler msg meta)
         nil
