@@ -1,6 +1,6 @@
 (ns helda.meta.schemas
   (:require [schema.core :as s])
-  (:require [schema.core :refer [defschema => optional-key maybe]])
+  (:require [schema.core :refer [defschema => optional-key maybe eq if]])
   )
 
 (defschema Message{
@@ -29,7 +29,7 @@
 (defschema Generator{
     :period s/Num
     :count s/Num
-    :msg-source (s/if keyword? (s/eq :examples) (=> Message []))
+    :msg-source (if keyword? (eq :examples) (=> Message []))
   })
 
 (defschema Handler{
