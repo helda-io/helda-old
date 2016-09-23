@@ -50,6 +50,14 @@
         :credit "Credit account field name"
         :amount "Money amount"
         }
+      :examples [
+        {
+          :tag :accounting-entry
+          :debit :account-assets-fixed
+          :credit :account-owner-equities
+          :amount 1000
+          }
+        ]
       :msg-schema {
         :tag s/Keyword
         :debit s/Keyword

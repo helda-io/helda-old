@@ -29,7 +29,7 @@
 (defschema Generator{
     :period s/Num
     :count s/Num
-    :msg-source (=> Message [])
+    :msg-source (s/if keyword? (s/eq :examples) (=> Message []))
   })
 
 (defschema Handler{
