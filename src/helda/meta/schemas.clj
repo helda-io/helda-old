@@ -56,6 +56,7 @@
 
 (defschema Meta{
   :name s/Keyword
+  (optional-key :description) s/Str
   :fields {s/Keyword Field}
   :handlers {s/Keyword Handler}
   :sys-handlers {s/Keyword (=> Message [Message Meta])}

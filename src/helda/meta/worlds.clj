@@ -5,16 +5,17 @@
   )
 
 ; Worlds meta-info app
-(defn create-meta []
+(defn create-meta [meta-list]
   (-> (init-meta :worlds-meta)
     (add-field {
       :name :worlds-list
-      :default-value []
+      :default-value (map #(% :name) meta-list)
       :description "List of worlds"
       })
     (add-field {
       :name :worlds-description
-      :default-value {}
+      :default-value
+        (zipmap (map #(% :name) meta-list) (map #(% :description) meta-list))
       :description "Worlds description per key"
       })
 
