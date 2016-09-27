@@ -30,7 +30,6 @@
       ((handler :handler) (validate-msg handler (coerce-msg handler msg)) world)
       (if-let [sys-handler (get-in meta [:sys-handlers (msg :tag)])]
         (sys-handler msg meta)
-        nil
         )
       )
     )
