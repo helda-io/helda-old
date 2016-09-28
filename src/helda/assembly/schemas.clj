@@ -1,6 +1,6 @@
 (ns helda.assembly.schemas
   (:require [schema.core :as s])
-  (:require [schema.core :refer [defschema => optional-key maybe eq if]])
+  (:require [schema.core :refer [defschema => optional-key maybe eq enum if]])
   )
 
 (defschema Generator{
@@ -10,7 +10,8 @@
   })
 
 (defschema Assembly{
-    :generators [Generator]
     :meta-list [Meta]
+    :generators [Generator]
     :storage-url s/Str
+    :adapter (enum :repl :embedded)
   })
