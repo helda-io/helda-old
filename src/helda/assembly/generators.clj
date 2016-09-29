@@ -1,6 +1,7 @@
 (ns helda.assembly.generators
-  
-  (:require [clojure.core.async :refer :all])
+  (:require [schema.core :as s])
+  (:require [helda.assembly.schemas :refer :all])
+  (:require [clojure.core.async :refer [thread]])
   (:require [helda.engines :refer :all])
   )
 
@@ -22,7 +23,9 @@
             )
           (if (= -1 iter)
             (recur -1)
-            (recur (- count 1))
+            (if-not (= 0 iter)
+              (recur (- count 1))
+              )
             )
           )
         )

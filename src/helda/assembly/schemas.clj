@@ -1,6 +1,7 @@
 (ns helda.assembly.schemas
   (:require [schema.core :as s])
   (:require [schema.core :refer [defschema => optional-key maybe eq enum if]])
+  (:require [helda.meta.schemas :refer :all])
   )
 
 (defschema Generator{

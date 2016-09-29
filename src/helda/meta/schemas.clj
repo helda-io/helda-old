@@ -55,9 +55,3 @@
   :sys-handlers {s/Keyword (=> Message [Message Meta])}
   :fixtures {s/Keyword WorldFixture}
   })
-
-(defschema Generator{
-    :period s/Num
-    :count s/Num
-    :msg-source (=> Message [])
-  })
