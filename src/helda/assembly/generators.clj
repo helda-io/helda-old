@@ -4,8 +4,8 @@
   (:require [helda.engines :refer :all])
   )
 
-(s/defn add-generator [assembly :- Assembly generator :- Generator]
-  (assoc assembly :generators (conj (assembly :generators) generator))
+(s/defn start-all-gens [engine generators :- [Generator]]
+  (map #(start-gen engine %) generators)
   )
 
 (s/defn start-gen [engine generator :- Generator]
