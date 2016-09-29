@@ -1,25 +1,24 @@
 (ns helda.assembly.generators
-  (:require [schema.core :as s])
   (:require [helda.assembly.schemas :refer :all])
   (:require [clojure.core.async :refer [thread]])
   (:require [helda.engines :refer :all])
   )
 
-(s/defn add-generator [assembly generator :- Generator]
-
+(s/defn add-generator [assembly :- Assembly generator :- Generator]
+  (assoc assembly :generators (conj (assembly :generators) generator))
   )
 
-(defn start-gen [engine generator period count]
+(s/defn start-gen [engine generator :- Generator]
   (thread
-    (loop [iter (if (> count 0) count -1)]
-      (if-let [msg (generator)]
+    (loop [iter (if (> (generator :count) 0) (generator :count) -1)]
+      (if-let [msg ((generator :msg-source))]
         (do
           (println (str
             "Message " msg " ;response "
-            ;(handle-msg engine msg)
+            (handle-msg engine msg)
             ))
-          (if (> period 0)
-            (Thread/sleep period)
+          (if (> (generator :period) 0)
+            (Thread/sleep (generator :period))
             )
           (if (= -1 iter)
             (recur -1)

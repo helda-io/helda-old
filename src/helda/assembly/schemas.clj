@@ -10,9 +10,11 @@
     :msg-source (=> Message [])
   })
 
+(def AdapterEnum (enum :repl :embedded))
+
 (defschema Assembly{
     :meta-list [Meta]
     :generators [Generator]
     :storage-url s/Str
-    :adapter (enum :repl :embedded)
+    :adapter AdapterEnum
   })

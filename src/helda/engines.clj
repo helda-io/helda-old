@@ -43,3 +43,17 @@
       )
     )
   )
+
+(defn create-engine [adapter storage-buider & meta-list]
+  (helda.engines.Router.
+    adapter
+    (map
+      #(helda.engines.SingleEngine.
+        (helda.adapters.core.SimpleMsgAdapter.)
+        (storage-builder %)
+        %
+        )
+      (conj meta-list (worlds/create-meta meta-list))
+      )
+    )
+  )
