@@ -24,7 +24,7 @@
           (if (= -1 iter)
             (recur -1)
             (if-not (= 0 iter)
-              (recur (- count 1))
+              (recur (- iter 1))
               )
             )
           )
