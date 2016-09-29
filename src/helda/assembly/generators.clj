@@ -1,5 +1,5 @@
 (ns helda.assembly.generators
-  (:require [schema.core :as s])
+  
   (:require [clojure.core.async :refer :all])
   (:require [helda.engines :refer :all])
   )
