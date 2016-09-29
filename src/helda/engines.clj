@@ -1,6 +1,7 @@
 (ns helda.engines
   (:require [helda.adapters.core :refer :all])
   (:require [helda.meta.handlers :refer [handle]])
+  (:require [helda.meta.worlds :as worlds])
   (:require [helda.storage.core :refer :all])
   )
 
@@ -44,7 +45,7 @@
     )
   )
 
-(defn create-engine [adapter storage-buider & meta-list]
+(defn create-engine [adapter storage-builder & meta-list]
   (helda.engines.Router.
     adapter
     (map
