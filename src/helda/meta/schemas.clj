@@ -29,7 +29,7 @@
 (defschema Handler{
     :tag s/Keyword
     (optional-key :description) s/Str
-    :input-msg {
+    (optional-key :input-msg) {
       s/Keyword s/Str
     }
     (optional-key :examples) [Message]

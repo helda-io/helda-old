@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [helda.meta.handlers :refer :all]
             [helda.meta.fields :refer :all]
+            [helda.engines :refer :all]
             [helda.examples.accounting :refer :all]))
 
 (deftest create-meta-test
@@ -29,6 +30,25 @@
         (is (= 1000 (get-in changes [:world :account-assets-fixed])))
         (is (= -1000 (get-in changes [:world :account-owner-equities])))
         )
+    )
+  )
+
+(deftest assembly-test
+  (let
+    [msg {
+      :tag :accounting-entry
+      :debit :account-assets-fixed
+      :credit :account-owner-equities
+      :amount 1000
+    }
+    engine (run-accounting :embedded)]
+    (handle-msg engine msg)
+    (let [response (first (handle-msg engine {:tag :get-accounts}))]
+      (testing "World changes"
+        (is (= 1000 (response :account-assets-fixed)))
+        (is (= -1000 (response :account-owner-equities)))
+        )
+      )
     )
   )
 

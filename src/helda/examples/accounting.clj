@@ -46,6 +46,15 @@
       :schema s/Str
       })
     (add-handler {
+      :tag :get-accounts
+      :handler (fn [msg world]
+        (-> (init-response :get-accounts-response)
+          (reply-field :account-assets-fixed (world :account-assets-fixed))
+          (reply-field :account-owner-equities (world :account-owner-equities))
+          )
+        )
+      })
+    (add-handler {
       :tag :accounting-entry
       :input-msg {
         :debit "Debit account field name"
@@ -82,8 +91,8 @@
     )
   )
 
-(defn run-accounting []
-  (-> (init-assembly :repl)
+(defn run-accounting [adapter]
+  (-> (init-assembly adapter)
     (add-meta (create-meta))
     (run-assembly)
     )
