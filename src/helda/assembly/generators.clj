@@ -1,11 +1,8 @@
 (ns helda.assembly.generators
-  (:require [helda.assembly.schemas :refer :all])
   (:require [clojure.core.async :refer [thread]])
+  (:require [schema.core :as s])
+  (:require [helda.assembly.schemas :refer :all])
   (:require [helda.engines :refer :all])
-  )
-
-(s/defn start-all-gens [engine generators :- [Generator]]
-  (map #(start-gen engine %) generators)
   )
 
 (s/defn start-gen [engine generator :- Generator]
@@ -30,4 +27,8 @@
         )
       )
     )
+  )
+
+(s/defn start-all-gens [engine generators :- [Generator]]
+  (map #(start-gen engine %) generators)
   )

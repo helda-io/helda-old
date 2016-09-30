@@ -45,7 +45,7 @@
     )
   )
 
-(defn create-engine [adapter storage-builder & meta-list]
+(defn create-engine [adapter storage-builder meta-list]
   (helda.engines.Router.
     adapter
     (map

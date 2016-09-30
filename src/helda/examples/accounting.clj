@@ -1,7 +1,9 @@
 (ns helda.examples.accounting
+  (:require [schema.core :as s])
   (:use [helda.meta.core])
   (:use [helda.helpers.response])
-  (:require [schema.core :as s])
+
+  (:require [helda.assembly.core :refer :all])
   )
 
 ; Accounting app example
@@ -77,5 +79,12 @@
           )
         )
       })
+    )
+  )
+
+(defn run-accounting []
+  (-> (init-assembly :repl)
+    (add-meta (create-meta))
+    (run-assembly)
     )
   )
