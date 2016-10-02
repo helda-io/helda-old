@@ -6,7 +6,7 @@
 
 (deftest router-test
   (let [
-    engine (create-dsl-router-in-memory (accounting/create-meta))
+    engine (accounting/run-accounting :repl)
     msg "accounting-entry debit \"account-assets-fixed\"
     credit \"account-owner-equities\" amount 1000"
     ]
@@ -18,7 +18,7 @@
 
 (deftest worlds-app-test
   (let [
-    engine (create-dsl-router-in-memory (accounting/create-meta))
+    engine (accounting/run-accounting :repl)
     result (do
       (first (handle-msg engine "worlds"))
       )
