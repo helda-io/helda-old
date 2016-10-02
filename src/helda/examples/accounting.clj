@@ -94,6 +94,6 @@
 (defn run-accounting [adapter]
   (-> (init-assembly adapter)
     (add-meta (create-meta))
-    (run-assembly)
+    run-assembly
     )
   )

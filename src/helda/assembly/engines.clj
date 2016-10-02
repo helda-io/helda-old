@@ -28,12 +28,11 @@
   Engine
 
   (handle-msg [this msg]
-    (first
-      (map #(convert-results adapter %)
-        (remove nil?
-          (map #(handle-msg % (convert-input-msg adapter msg)) engines)
-          )
-        )
+    (->> engines
+      (map #(handle-msg % (convert-input-msg adapter msg)))
+      (remove nil?)
+      (map #(convert-results adapter %))
+      first
       )
     )
   )
