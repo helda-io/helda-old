@@ -1,6 +1,6 @@
 (ns helda.assembly.core
   (:require [schema.core :as s])
-  (:require [helda.engines :refer :all])
+  (:require [helda.assembly.engines :refer :all])
   (:require [helda.adapters.core :refer :all])
   (:require [helda.adapters.dsl :refer :all])
   (:require [helda.assembly.generators :refer :all])

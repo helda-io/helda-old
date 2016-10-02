@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [helda.meta.handlers :refer :all]
             [helda.meta.fields :refer :all]
-            [helda.engines :refer :all]
+            [helda.assembly.engines :refer :all]
             [helda.examples.accounting :refer :all]))
 
 (deftest create-meta-test

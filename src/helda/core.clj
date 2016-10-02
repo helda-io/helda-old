@@ -5,11 +5,11 @@
   (:require [helda.meta.fields :refer [seed-world]])
   (:require [helda.adapters.core :refer :all])
   (:require [helda.adapters.dsl :refer :all])
-  (:require [helda.engines :refer :all])
+  (:require [helda.assembly.engines :refer :all])
   )
 
 (defn create-dsl-in-memory [meta]
-  (helda.engines.SingleEngine.
+  (helda.assembly.engines.SingleEngine.
     (helda.adapters.dsl.DslMsgAdapter.)
     (helda.storage.core.WorldStorageAtom. (atom (seed-world meta)))
     meta
@@ -17,10 +17,10 @@
   )
 
 (defn create-dsl-router-in-memory [& meta-list]
-  (helda.engines.Router.
+  (helda.assembly.engines.Router.
     (helda.adapters.dsl.DslMsgAdapter.)
     (map
-      #(helda.engines.SingleEngine.
+      #(helda.assembly.engines.SingleEngine.
         (helda.adapters.core.SimpleMsgAdapter.)
         (helda.storage.core.WorldStorageAtom. (atom (seed-world %)))
         %

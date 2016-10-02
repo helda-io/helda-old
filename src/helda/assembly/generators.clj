@@ -2,7 +2,7 @@
   (:require [clojure.core.async :refer [thread]])
   (:require [schema.core :as s])
   (:require [helda.assembly.schemas :refer :all])
-  (:require [helda.engines :refer :all])
+  (:require [helda.assembly.engines :refer :all])
   )
 
 (s/defn start-gen [engine generator :- Generator]
