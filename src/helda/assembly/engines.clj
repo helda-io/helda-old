@@ -8,13 +8,14 @@
 (defprotocol Engine
   "Application entry point"
 
-  (handle-msg [this msg] "Handle incoming msg")
+  (handle-msg [this msg] [this publisher msg] "Handle incoming msg")
   )
 
 (deftype SingleEngine [storage meta]
   Engine
 
-  (handle-msg [this msg]
+  (handle-msg [this msg] (handle-msg this this msg))
+  (handle-msg [this publisher msg]
     (if-let [results (handle msg meta (load-world storage))]
       (do
         (save-changes storage (results :world))
@@ -27,11 +28,12 @@
 (deftype Router [adapter engines]
   Engine
 
-  (handle-msg [this msg]
+  (handle-msg [this msg] (handle-msg this this msg))
+  (handle-msg [this publisher msg]
     (->> engines
       (map #(->> msg
         (convert-input-msg adapter)
-        (handle-msg %)
+        (handle-msg % this)
         ))
       (remove nil?)
       (map #(convert-results adapter %))
