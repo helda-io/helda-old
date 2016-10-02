@@ -15,17 +15,10 @@
   Engine
 
   (handle-msg [this msg]
-    (let
-      [results (handle
-        msg
-        meta
-        (load-world storage)
-      )]
-      (if results
-        (do
-          (save-changes storage (results :world))
-          (results :msg)
-          )
+    (if-let [results (handle msg meta (load-world storage))]
+      (do
+        (save-changes storage (results :world))
+        (results :msg)
         )
       )
     )
