@@ -11,26 +11,26 @@
   (handle-msg [this msg] "Handle incoming msg")
   )
 
-(deftype SingleEngine [adapter storage meta]
+(deftype SingleEngine [storage meta]
   Engine
 
   (handle-msg [this msg]
     (let
       [results (handle
-        (convert-input-msg adapter msg)
+        msg
         meta
         (load-world storage)
       )]
       (if results
         (do
           (save-changes storage (results :world))
-          (convert-results adapter (results :msg))
+          (results :msg)
           )
         )
       )
     )
   )
-  
+
 (deftype Router [adapter engines]
   Engine
 
@@ -50,7 +50,6 @@
     adapter
     (map
       #(helda.assembly.engines.SingleEngine.
-        (helda.assembly.adapters.core.SimpleMsgAdapter.)
         (storage-builder %)
         %
         )
