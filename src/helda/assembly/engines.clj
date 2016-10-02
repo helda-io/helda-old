@@ -29,7 +29,10 @@
 
   (handle-msg [this msg]
     (->> engines
-      (map #(handle-msg % (convert-input-msg adapter msg)))
+      (map #(->> msg
+        (convert-input-msg adapter)
+        (handle-msg %)
+        ))
       (remove nil?)
       (map #(convert-results adapter %))
       first
