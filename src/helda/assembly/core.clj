@@ -1,8 +1,8 @@
 (ns helda.assembly.core
   (:require [schema.core :as s])
   (:require [helda.assembly.engines :refer :all])
-  (:require [helda.adapters.core :refer :all])
-  (:require [helda.adapters.dsl :refer :all])
+  (:require [helda.assembly.adapters.core :refer :all])
+  (:require [helda.assembly.adapters.dsl :refer :all])
   (:require [helda.assembly.generators :refer :all])
   (:require [helda.meta.fields :refer :all])
   (:require [helda.meta.schemas :refer :all])
@@ -25,8 +25,8 @@
   (let [engine
     (create-engine
       (if (= :repl (assembly :adapter))
-        (helda.adapters.dsl.DslMsgAdapter.)
-        (helda.adapters.core.SimpleMsgAdapter.)
+        (helda.assembly.adapters.dsl.DslMsgAdapter.)
+        (helda.assembly.adapters.core.SimpleMsgAdapter.)
         )
       ;todo starts-with to add mongo support
       #(helda.storage.core.WorldStorageAtom. (atom (seed-world %)))

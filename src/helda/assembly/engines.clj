@@ -1,5 +1,5 @@
 (ns helda.assembly.engines
-  (:require [helda.adapters.core :refer :all])
+  (:require [helda.assembly.adapters.core :refer :all])
   (:require [helda.meta.handlers :refer [handle]])
   (:require [helda.meta.worlds :as worlds])
   (:require [helda.storage.core :refer :all])
@@ -50,7 +50,7 @@
     adapter
     (map
       #(helda.assembly.engines.SingleEngine.
-        (helda.adapters.core.SimpleMsgAdapter.)
+        (helda.assembly.adapters.core.SimpleMsgAdapter.)
         (storage-builder %)
         %
         )

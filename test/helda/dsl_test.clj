@@ -1,12 +1,12 @@
 (ns helda.dsl-test
   (:require [clojure.test :refer :all]
-            [helda.adapters.core :refer :all]
-            [helda.adapters.dsl :refer :all]
+            [helda.assembly.adapters.core :refer :all]
+            [helda.assembly.adapters.dsl :refer :all]
             ))
 
 (deftest basic-command-parsing
   (let [result (convert-input-msg
-    (helda.adapters.dsl.DslMsgAdapter.)
+    (helda.assembly.adapters.dsl.DslMsgAdapter.)
     "command key1 value1 key2 2"
     )]
     (testing "Checking parsed tokens"
@@ -19,7 +19,7 @@
 
 (deftest quoted-command-parsing
   (let [result (convert-input-msg
-    (helda.adapters.dsl.DslMsgAdapter.)
+    (helda.assembly.adapters.dsl.DslMsgAdapter.)
     "command key0 \"123 456\" key3 v4 key1 \" key2 value2 \""
     )]
     (testing "Checking parsed tokens"
@@ -33,7 +33,7 @@
 
 (deftest syntax-sugar
   (let [result (convert-input-msg
-    (helda.adapters.dsl.DslMsgAdapter.)
+    (helda.assembly.adapters.dsl.DslMsgAdapter.)
     "command key0 \"123 456\", key3=v4, key1=\" key2 value2 \""
     )]
     (testing "Checking parsed tokens"

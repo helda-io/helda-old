@@ -1,6 +1,6 @@
-(ns helda.adapters.dsl
+(ns helda.assembly.adapters.dsl
   (:require [clojure.string :refer [split starts-with?]])
-  (:require [helda.adapters.core :refer :all])
+  (:require [helda.assembly.adapters.core :refer :all])
   )
 
 (def ws-regex #"[\s;=,{}]+")

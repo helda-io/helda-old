@@ -1,4 +1,4 @@
-(ns helda.adapters.core)
+(ns helda.assembly.adapters.core)
 
 (defprotocol MsgAdapter
   "Converting message"
