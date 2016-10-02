@@ -25,32 +25,38 @@
     )
   )
 
-(deftype Router [adapter engines]
+(deftype Router [engines]
   Engine
 
   (handle-msg [this msg] (handle-msg this this msg))
   (handle-msg [this publisher msg]
     (->> engines
-      (map #(->> msg
-        (convert-input-msg adapter)
-        (handle-msg % this)
-        ))
+      (map #(handle-msg % publisher msg))
       (remove nil?)
-      (map #(convert-results adapter %))
       first
       )
     )
   )
 
-(defn create-engine [adapter storage-builder meta-list]
-  (helda.assembly.engines.Router.
-    adapter
-    (map
-      #(helda.assembly.engines.SingleEngine.
-        (storage-builder %)
-        %
-        )
-      (conj meta-list (worlds/create-meta meta-list))
+(deftype AssemblyEngine [adapter router]
+  Engine
+
+  (handle-msg [this msg] (handle-msg this router msg))
+  (handle-msg [this publisher msg]
+    (->> msg
+      (convert-input-msg adapter)
+      (handle-msg router publisher)
+      (convert-results adapter)
       )
+    )
+  )
+
+(defn create-engine [adapter storage-builder meta-list]
+  (AssemblyEngine.
+    adapter
+    (Router. (map
+      #(SingleEngine. (storage-builder %) %)
+      (conj meta-list (worlds/create-meta meta-list))
+      ))
     )
   )
