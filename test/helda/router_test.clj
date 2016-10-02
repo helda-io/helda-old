@@ -20,7 +20,7 @@
   (let [
     engine (accounting/run-accounting :repl)
     result (do
-      (first (handle-msg engine "worlds"))
+      (handle-msg engine "worlds")
       )
     ]
     (testing "Checking router results"

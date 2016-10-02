@@ -30,12 +30,12 @@
       )
     )
   )
-;todo add take count
+  
 (deftype Router [adapter engines]
   Engine
 
   (handle-msg [this msg]
-    (doall
+    (first
       (map #(convert-results adapter %)
         (remove nil?
           (map #(handle-msg % (convert-input-msg adapter msg)) engines)

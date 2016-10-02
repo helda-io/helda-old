@@ -43,7 +43,7 @@
     }
     engine (run-accounting :embedded)]
     (handle-msg engine msg)
-    (let [response (first (handle-msg engine {:tag :get-accounts}))]
+    (let [response (handle-msg engine {:tag :get-accounts})]
       (testing "World changes"
         (is (= 1000 (response :account-assets-fixed)))
         (is (= -1000 (response :account-owner-equities)))
