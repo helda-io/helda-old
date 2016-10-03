@@ -13,7 +13,7 @@
   })
 
 (defschema Response{
-    :msg Message
+    :response Message
     (optional-key :world) World
   })
 

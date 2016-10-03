@@ -19,7 +19,7 @@
     (if-let [results (handle msg meta (load-world storage))]
       (do
         (save-changes storage (results :world))
-        (results :msg)
+        (results :response)
         )
       )
     )

@@ -4,11 +4,11 @@
   )
 
 (s/defn init-response :- Response [tag :- s/Keyword]
-  {:msg {:tag tag}}
+  {:response {:tag tag}}
   )
 
 (s/defn reply-msg :- Response [response :- Response msg :- Message]
-  (assoc response :msg msg)
+  (assoc response :response msg)
   )
 
 (s/defn reply-field :- Response
@@ -17,7 +17,7 @@
     key :- s/Keyword
     value :- s/Any
     ]
-  (assoc-in response [:msg key] value)
+  (assoc-in response [:response key] value)
   )
 
 (s/defn save :- Response [response :- Response key :- s/Keyword value :- s/Any]
