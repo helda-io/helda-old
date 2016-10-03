@@ -19,7 +19,16 @@
     (if-let [results (handle msg meta (load-world storage))]
       (do
         (save-changes storage (results :world))
-        (results :response)
+        (if-let [response (results :response)]
+          response
+          (if-let [requests (results :requests)]
+            (->> requests
+              (map #(handle-msg publisher %))
+              (remove nil?)
+              first
+              )
+            )
+          )
         )
       )
     )
