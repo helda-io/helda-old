@@ -19,6 +19,14 @@
     (if-let [results (handle msg meta (load-world storage))]
       (do
         (save-changes storage (results :world))
+        (if-let [queue (get-in results [:world :queue])]
+          (thread
+            (->> queue
+              (map #(handle-msg publisher %))
+              doall
+              )
+            )
+          )
         (if-let [response (results :response)]
           response
           (if-let [requests (results :requests)]
