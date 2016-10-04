@@ -40,6 +40,18 @@
     )
   )
 
+(deftype EndpointEngine [msg-sink async]
+  Engine
+
+  (handle-msg [this msg] (handle-msg this this msg))
+  (handle-msg [this publisher msg]
+      (if async
+        (future (msg-sink msg))
+        (msg-sink msg)
+        )
+    )
+  )
+
 ;todo can be rewritten to have o(1) routing using maps
 (deftype Router [engines endpoints]
   Engine
@@ -73,7 +85,7 @@
     )
   )
 
-(defn create-engine [adapter storage-builder meta-list]
+(defn create-engine [adapter storage-builder meta-list endpoints]
   (AssemblyEngine.
     adapter
     (Router.
@@ -81,7 +93,10 @@
         #(SingleEngine. (storage-builder %) %)
         (conj meta-list (worlds/create-meta meta-list))
         )
-      [];todo init endpoints here  
+      (map
+        #(EndpointEngine. (% :msg-sink) (% :async))
+        endpoints
+        )
       )
     )
   )

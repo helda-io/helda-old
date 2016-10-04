@@ -18,6 +18,11 @@
   (assoc assembly :generators (conj (assembly :generators) generator))
   )
 
+(s/defn ^:always-validate add-endpoint
+  [assembly :- Assembly endpoint :- Endpoint]
+  (assoc assembly :endpoints (conj (assembly :endpoints) endpoint))
+  )
+
 (s/defn ^:always-validate add-meta :- Assembly [assembly :- Assembly meta :- Meta]
   (assoc assembly :meta-list (conj (assembly :meta-list) meta))
   )
@@ -32,6 +37,7 @@
       ;todo starts-with to add mongo support
       #(helda.storage.core.WorldStorageAtom. (atom (seed-world %)))
       (assembly :meta-list)
+      (assembly :endpoints)
       )]
       (start-all-gens engine (assembly :generators))
       engine
