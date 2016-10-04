@@ -20,11 +20,9 @@
       (do
         (save-changes storage (results :world))
         (if-let [queue (get-in results [:world :queue])]
-          (thread
-            (->> queue
-              (map #(handle-msg publisher %))
-              doall
-              )
+          (->> queue
+            (pmap #(handle-msg publisher %))
+            doall
             )
           )
         (if-let [response (results :response)]
