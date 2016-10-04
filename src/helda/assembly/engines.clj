@@ -40,16 +40,22 @@
     )
   )
 
-;Can be rewritten to have o(1) routing
-(deftype Router [engines]
+;todo can be rewritten to have o(1) routing using maps
+(deftype Router [engines endpoints]
   Engine
 
   (handle-msg [this msg] (handle-msg this this msg))
   (handle-msg [this publisher msg]
-    (->> engines
-      (map #(handle-msg % publisher msg))
-      (remove nil?)
-      first
+    (if (msg :endpoint)
+      (->> endpoints
+        (map #(handle-msg % publisher msg))
+        doall
+        )
+      (->> engines
+        (map #(handle-msg % publisher msg))
+        (remove nil?)
+        first
+        )
       )
     )
   )
@@ -70,9 +76,12 @@
 (defn create-engine [adapter storage-builder meta-list]
   (AssemblyEngine.
     adapter
-    (Router. (map
-      #(SingleEngine. (storage-builder %) %)
-      (conj meta-list (worlds/create-meta meta-list))
-      ))
+    (Router.
+      (map
+        #(SingleEngine. (storage-builder %) %)
+        (conj meta-list (worlds/create-meta meta-list))
+        )
+      [];todo init endpoints here  
+      )
     )
   )

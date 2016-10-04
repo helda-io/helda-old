@@ -10,7 +10,8 @@
   )
 
 (s/defn ^:always-validate init-assembly :- Assembly [adapter :- AdapterEnum]
-  {:meta-list [] :generators [] :adapter adapter :storage-url "atom"})
+  {:meta-list [] :generators [] :endpoints []
+    :adapter adapter :storage-url "atom"})
 
 (s/defn ^:always-validate add-generator
   [assembly :- Assembly generator :- Generator]
