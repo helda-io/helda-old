@@ -40,6 +40,7 @@
     )
   )
 
+;Can be rewritten to have o(1) routing
 (deftype Router [engines]
   Engine
 
