@@ -45,9 +45,9 @@
 
   (handle-msg [this msg] (handle-msg this this msg))
   (handle-msg [this publisher msg]
-      (if async
-        (future (msg-sink msg))
-        (msg-sink msg)
+      (if (msg :request?) ;todo we will define this condition
+        (->> msg msg-sink (handle-msg publisher))
+        (future (->> msg msg-sink (handle-msg publisher)))
         )
     )
   )
@@ -61,7 +61,8 @@
     (if (msg :endpoint)
       (->> endpoints
         (map #(handle-msg % publisher msg))
-        doall
+        (remove nil?)
+        first
         )
       (->> engines
         (map #(handle-msg % publisher msg))
