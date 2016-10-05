@@ -31,6 +31,8 @@
             (->> requests
               (map #(handle-msg publisher %))
               (remove nil?)
+              (map #(handle-msg this %)) ;processing response inside current engine
+              (remove nil?)
               first
               )
             )

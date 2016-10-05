@@ -5,6 +5,7 @@
 
 (defschema Message{
     :tag s/Keyword
+    (optional-key :world) s/Keyword
     s/Keyword s/Any
   })
 
@@ -15,6 +16,7 @@
 (defschema Response{
     :response Message
     (optional-key :world) World
+
   })
 
 (defschema Field{
