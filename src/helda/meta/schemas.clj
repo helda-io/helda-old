@@ -6,6 +6,7 @@
 (defschema Message{
     :tag s/Keyword
     (optional-key :world) s/Keyword
+    (optional-key :endpoint) s/Keyword
     s/Keyword s/Any
   })
 
