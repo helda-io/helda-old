@@ -47,10 +47,7 @@
 
   (handle-msg [this msg] (handle-msg this this msg))
   (handle-msg [this publisher msg]
-      (if (msg :request?) ;todo we will define this condition
-        (->> msg msg-sink (handle-msg publisher))
-        (future (->> msg msg-sink (handle-msg publisher)))
-        )
+    (future (->> msg msg-sink (handle-msg publisher)))
     )
   )
 
