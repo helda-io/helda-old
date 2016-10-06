@@ -16,13 +16,9 @@
   Tracer
 
   (trace [this world-name msg result]
-    (println
-      (str
-        "World " world-name
-        "Request " msg
-        "Result " (result :response)
-        )
-      )
+    (println (str "###### " world-name " #####"))
+    (println (str ">>>>> " msg " >>>>>"))
+    (println (str "<<<<< " (result :response) " <<<<<"))
     )
   )
 
@@ -30,13 +26,9 @@
   Tracer
 
   (trace [this world-name msg result]
-    (println
-      (str
-        "World " world-name
-        "Request " msg
-        "Result " result
-        )
-      )
+    (println (str "###### " world-name " #####"))
+    (println (str ">>>>> " msg " >>>>>"))
+    (println (str "<<<<< " result " <<<<<"))
     )
   )
 

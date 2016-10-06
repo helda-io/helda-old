@@ -95,7 +95,7 @@
         #(SingleEngine.
           (storage-builder %)
           %
-          (helda.assembly.tracer.FullResultTracer.) ;todo add type selection
+          (helda.assembly.tracer.ShortTracer.) ;todo add type selection
           )
         (conj meta-list (worlds/create-meta meta-list))
         )
