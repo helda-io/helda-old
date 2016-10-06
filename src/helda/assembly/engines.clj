@@ -1,5 +1,6 @@
 (ns helda.assembly.engines
   (:require [helda.assembly.adapters.core :refer :all])
+  (:require [helda.assembly.tracer :refer :all])
   (:require [helda.meta.handlers :refer [handle]])
   (:require [helda.meta.worlds :as worlds])
   (:require [helda.storage.core :refer :all])
@@ -11,7 +12,7 @@
   (handle-msg [this msg] [this publisher msg] "Handle incoming msg")
   )
 
-(deftype SingleEngine [storage meta]
+(deftype SingleEngine [storage meta tracer]
   Engine
 
   (handle-msg [this msg] (handle-msg this this msg))
@@ -25,6 +26,7 @@
             doall
             )
           )
+        (trace tracer (meta :name) msg results)
         (if-let [response (results :response)]
           response
           (if-let [requests (results :requests)]
@@ -90,7 +92,11 @@
     adapter
     (Router.
       (map
-        #(SingleEngine. (storage-builder %) %)
+        #(SingleEngine.
+          (storage-builder %)
+          %
+          (helda.assembly.tracer.FullResultTracer.) ;todo add type selection
+          )
         (conj meta-list (worlds/create-meta meta-list))
         )
       (map
