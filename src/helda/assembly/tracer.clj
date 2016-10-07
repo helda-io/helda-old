@@ -16,7 +16,7 @@
   Tracer
 
   (trace [this world-name msg result]
-    (println (str "###### " world-name " #####"))
+    (println (str "##### " world-name " #####"))
     (println (str ">>>>> " msg " >>>>>"))
     (println (str "<<<<< " (result :response) " <<<<<"))
     )
@@ -26,7 +26,7 @@
   Tracer
 
   (trace [this world-name msg result]
-    (println (str "###### " world-name " #####"))
+    (println (str "##### " world-name " #####"))
     (println (str ">>>>> " msg " >>>>>"))
     (println (str "<<<<< " result " <<<<<"))
     )

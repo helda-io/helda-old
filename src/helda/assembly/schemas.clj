@@ -18,6 +18,7 @@
   })
 
 (def AdapterEnum (enum :repl :embedded))
+(def TracingEnum (enum :none :short :full))
 
 (defschema Assembly{
     :meta-list [Meta]
@@ -25,4 +26,5 @@
     :endpoints [Endpoint]
     :storage-url s/Str
     :adapter AdapterEnum
+    (s/optional-key :tracing) TracingEnum
   })

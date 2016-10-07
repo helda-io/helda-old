@@ -87,16 +87,12 @@
     )
   )
 
-(defn create-engine [adapter storage-builder meta-list endpoints]
+(defn create-engine [adapter storage-builder meta-list endpoints tracer]
   (AssemblyEngine.
     adapter
     (Router.
       (map
-        #(SingleEngine.
-          (storage-builder %)
-          %
-          (helda.assembly.tracer.ShortTracer.) ;todo add type selection
-          )
+        #(SingleEngine. (storage-builder %) % tracer)
         (conj meta-list (worlds/create-meta meta-list))
         )
       (map

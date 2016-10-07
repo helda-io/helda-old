@@ -4,6 +4,7 @@
   (:require [helda.assembly.adapters.core :refer :all])
   (:require [helda.assembly.adapters.dsl :refer :all])
   (:require [helda.assembly.generators :refer :all])
+  (:require [helda.assembly.tracer :refer :all])
   (:require [helda.meta.fields :refer :all])
   (:require [helda.meta.schemas :refer :all])
   (:require [helda.assembly.schemas :refer :all])
@@ -38,6 +39,12 @@
       #(helda.storage.core.WorldStorageAtom. (atom (seed-world %)))
       (assembly :meta-list)
       (assembly :endpoints)
+      (case (assembly :tracing)
+        :none (helda.assembly.tracer.NoTracing.)
+        :short (helda.assembly.tracer.ShortTracer.)
+        :full (helda.assembly.tracer.FullResultTracer.)
+        (helda.assembly.tracer.ShortTracer.)
+        )
       )]
       (start-all-gens engine (assembly :generators))
       engine
