@@ -4,39 +4,54 @@
   (:use [helda.helpers.response])
   )
 
-(defn is-bid [msg];sell
-  (= :bid (msg :bid-offer))
+(defn is-buy [order]
+  (= :buy (order :buy-sell))
   )
 
-(defn is-offer [msg];buy
-  (= :offer (msg :bid-offer))
+(defn is-sell [order];buy
+  (= :sell (order :buy-sell))
   )
 
-(defn opp-stack [msg world]
-  (if (is-bid msg) (world :ask-stack) (world :bid-stack))
+(defn opp-stack [order world]
+  (if (is-buy order) (world :sell-stack) (world :buy-stack))
   )
 
-(defn match [msg1 msg2]
-  (let [msg1-price (msg1 :price) msg2-price (msg2 :price)]
+(defn match-pair [order1 order2]
+  (let [order1-price (order1 :price) order2-price (order2 :price)]
     (cond
       (= price1 price2) true
-      (and (is-bid msg1) (> msg2-price msg1-price)) true
-      (and (is-offer msg1) (< msg2-price msg1-price)) true
+      (and (is-buy order1) (< order2-price order1-price)) true
+      (and (is-sell order1) (> order2-price order1-price)) true
       :else false
       )
+    )
+  )
+
+(defn match-stack [order stack]
+  (if-let [order2 (first stack)]
+    (if (match-pair order order2)
+      order2
+      (recur order (next stack))
+      )
+    )
+  )
+
+(defn fill-order [order world]
+  (if-let [order2 (match-stack order (opp-stack order world))]
+    
     )
   )
 
 (defn create-meta []
   (-> (init-meta :accounts)
     (add-field {
-      :name :bid-stack
+      :name :buy-stack
       :default-value []
       :description "Bid orders stack"
       ; :schema s/Num
       })
     (add-field {
-      :name :ask-stack
+      :name :sell-stack
       :default-value []
       :description "Ask orders stack"
       ; :schema s/Num
@@ -47,21 +62,24 @@
         :sym "Symbol"
         :amount "Money amount"
         :price "Price"
-        :bid-offer "Bid/offer side"
+        :cp "Counterparty"
+        :buy-sell "Bid/offer side"
         }
       :examples [
         {
           :tag :place-order
           :amount 100
           :price 12.5
-          :bid-offer :offer
+          :cp "CP1"
+          :buy-sell :offer
           }
         ]
       :msg-schema {
         :tag s/Keyword
         :amount s/Num
         :price s/Num
-        :bid-offer (s/enum :bid :offer)
+        :cp: s/Str
+        :buy-sell (s/enum :bid :offer)
         }
       :handler (fn [msg world]
         (if (is-bid msg)
