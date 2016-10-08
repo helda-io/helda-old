@@ -4,12 +4,22 @@
   (:use [helda.helpers.response])
   )
 
+(def amount-tolerance 0.1)
+
 (defn is-buy [order]
   (= :buy (order :buy-sell))
   )
 
 (defn is-sell [order];buy
   (= :sell (order :buy-sell))
+  )
+
+(defn is-filled [order]
+  (>= amount-tolerance (order :amount))
+  )
+
+(defn not-filled [order]
+  (< amount-tolerance (order :amount))
   )
 
 (defn opp-stack [order world]
@@ -36,9 +46,24 @@
     )
   )
 
-(defn fill-order [order world]
-  (if-let [order2 (match-stack order (opp-stack order world))]
-    
+(defn fill-order [order world fills]
+  (if (not-filled order)
+    (if-let [order2 (match-stack order (opp-stack order world))]
+      (let [fill-amount (min (order :amount) (order2 :amount))]
+        (let [
+          rest-order1 (withdraw-amount order fill-amount)
+          rest-order2 (withdraw-amount order2 fill-amount)
+          ]
+          (recur
+            (if (not-filled rest-order1) rest-order1 rest-order2)
+            world
+            (conj fills {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)})
+            )
+          )
+        )
+        fills
+      )
+      fills
     )
   )
 
