@@ -18,12 +18,16 @@
   (>= amount-tolerance (order :amount))
   )
 
-(defn not-filled [order]
-  (< amount-tolerance (order :amount))
+(defn stack-key [order]
+  (if (is-buy order) :buy-stack :sell-stack)
+  )
+
+(defn opp-stack-key [order]
+  (if (is-buy order) :sell-stack :buy-stack)
   )
 
 (defn opp-stack [order world]
-  (if (is-buy order) (world :sell-stack) (world :buy-stack))
+  (world (opp-stack-key order))
   )
 
 (defn match-pair [order1 order2]
@@ -46,23 +50,30 @@
     )
   )
 
-(defn fill-order [order world fills]
-  (if (not-filled order)
+(defn fill-order [order world changes]
+  (if-not (is-filled order)
     (if-let [order2 (match-stack order (opp-stack order world))]
       (let [
         fill-amount (min (order :amount) (order2 :amount))
-        rest-order1 (withdraw-amount order fill-amount)
-        rest-order2 (withdraw-amount order2 fill-amount)
+        order1-rest (withdraw-amount order fill-amount)
+        order2-rest (withdraw-amount order2 fill-amount)
         ]
         (recur
-          (if (not-filled rest-order1) rest-order1 rest-order2)
+          (if (is-filled order1-rest) order2-rest order1-rest)
           world
-          (conj fills {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)})
-          )
+          {
+            :fills (conj (changes :fills)
+              {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
+              )
+            (opp-stack-key) (if (is-filled order2-rest)
+              (remove (world (opp-stack-key)) order2)
+              ;todo update amount for order2
+              )
+          })
         )
-        fills
+        changes ;todo we need to put in order1 to stack here
       )
-      fills
+      changes
     )
   )
 
@@ -78,6 +89,12 @@
       :name :sell-stack
       :default-value []
       :description "Ask orders stack"
+      ; :schema s/Num
+      })
+    (add-field {
+      :name :fills
+      :default-value []
+      :description "Order fills"
       ; :schema s/Num
       })
     (add-handler {
@@ -106,8 +123,7 @@
         :buy-sell (s/enum :bid :offer)
         }
       :handler (fn [msg world]
-        (if (is-bid msg)
-
+        (fill-order msg world {})
         )
       })
     )
