@@ -45,13 +45,8 @@
     )
   )
 
-(defn match-stack [order stack]
-  (if-let [order2 (first stack)]
-    (if (match-pair order order2)
-      order2
-      (recur order (next stack))
-      )
-    )
+(defn match-stack [order stack] ;we are trying only first because list sorted
+  (if-let [order2 (first stack)] (match-pair order order2))
   )
 
 (defn insert-order [order col]
@@ -63,10 +58,10 @@
     col
   )
 
-;todo algo can be more effective if we add sorting
 (defn fill-order [order world changes]
   (if-not (is-filled order)
-    (if-let [order2 (match-stack order (opp-stack order world))]
+    (if-let [order2 (match-stack order
+        (opp-stack order (if changes changes world)))]
       (let [
         fill-amount (min (order :amount) (order2 :amount))
         order1-rest (withdraw-amount order fill-amount)
@@ -80,7 +75,7 @@
               {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
               )
             (opp-stack-key order)
-              (->> (opp-stack order world)
+              (->> (opp-stack order (if changes changes world))
                 (remove #(= order2 %))
                 (insert-order order2-rest)
                 )
@@ -140,7 +135,7 @@
         :buy-sell (s/enum :bid :offer)
         }
       :handler (fn [msg world]
-        (fill-order msg world {})
+        (fill-order msg world nil)
         )
       })
     )
