@@ -50,6 +50,16 @@
     )
   )
 
+(defn insert-order [order col]
+  (if-not (is-filled order)
+    (-> col
+      (conj order2-rest)
+      (sort-by :price (if (is-buy order) < >))
+      )
+    col
+  )
+
+;todo algo can be more effective if we add sorting
 (defn fill-order [order world changes]
   (if-not (is-filled order)
     (if-let [order2 (match-stack order (opp-stack order world))]
@@ -61,14 +71,16 @@
         (recur
           (if (is-filled order1-rest) order2-rest order1-rest)
           world
+          ;use assoc and thread-first operator here
           {
             :fills (conj (changes :fills)
               {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
               )
-            (opp-stack-key) (if (is-filled order2-rest)
-              (remove (world (opp-stack-key)) order2)
-              ;todo update amount for order2
-              )
+            (opp-stack-key order)
+              (->> (opp-stack order world)
+                (remove #(= order2 %))
+                (insert-order order2-rest)
+                )
           })
         )
         changes ;todo we need to put in order1 to stack here
