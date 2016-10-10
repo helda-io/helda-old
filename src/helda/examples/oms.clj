@@ -26,6 +26,10 @@
   (if (is-buy order) :sell-stack :buy-stack)
   )
 
+(defn own-stack [order world]
+  (world (stack-key order))
+  )
+
 (defn opp-stack [order world]
   (world (opp-stack-key order))
   )
@@ -69,9 +73,8 @@
         order2-rest (withdraw-amount order2 fill-amount)
         ]
         (recur
-          (if (is-filled order1-rest) order2-rest order1-rest)
+          order1-rest
           world
-          ;use assoc and thread-first operator here
           {
             :fills (conj (changes :fills)
               {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
@@ -83,7 +86,9 @@
                 )
           })
         )
-        changes ;todo we need to put in order1 to stack here
+        (assoc changes (stack-key order)
+          (insert-order order1-rest (own-stack order world))
+          )
       )
       changes
     )
