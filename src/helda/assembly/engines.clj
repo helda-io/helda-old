@@ -86,7 +86,7 @@
       )
     )
   )
-
+;todo separate create-router and create-assembly-engine
 (defn create-engine [adapter storage-builder meta-list endpoints tracer]
   (AssemblyEngine.
     adapter
