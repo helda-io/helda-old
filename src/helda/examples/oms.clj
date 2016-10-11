@@ -6,34 +6,20 @@
 
 (def amount-tolerance 0.1)
 
-(defn is-buy [order]
-  (= :buy (order :buy-sell))
-  )
+(defn is-buy [order] (-> order :buy-sell (= :buy)))
 
-(defn is-sell [order];buy
-  (= :sell (order :buy-sell))
-  )
+(defn is-sell [order] (-> order :buy-sell (= :sell)))
 
-(defn is-filled [order]
-  (>= amount-tolerance (order :amount))
-  )
+(defn is-filled [order] (->> order :amount (>= amount-tolerance)))
 
-(defn stack-key [order]
-  (if (is-buy order) :buy-stack :sell-stack)
-  )
+(defn stack-key [order] (if (is-buy order) :buy-stack :sell-stack))
 
-(defn opp-stack-key [order]
-  (if (is-buy order) :sell-stack :buy-stack)
-  )
-
-(defn own-stack [order world]
-  (world (stack-key order))
-  )
+(defn opp-stack-key [order] (if (is-buy order) :sell-stack :buy-stack))
 
 (defn match-pair [order1 order2]
   (let [order1-price (order1 :price) order2-price (order2 :price)]
     (cond
-      (= price1 price2) true
+      (= order1-price order2-price) true
       (and (is-buy order1) (< order2-price order1-price)) true
       (and (is-sell order1) (> order2-price order1-price)) true
       :else false
@@ -48,7 +34,7 @@
 (defn insert-order [order col]
   (if-not (is-filled order)
     (-> col
-      (conj order2-rest)
+      (conj order)
       (sort-by :price (if (is-buy order) < >))
       )
     col
@@ -57,7 +43,9 @@
 (defn fill-order [order world changes]
   (if-not (is-filled order)
     (if-let [order2 (match-stack
-      order ((or changes world) (opp-stack-key order)))]
+        order
+        ((or changes world) (opp-stack-key order))
+      )]
       (let [
         fill-amount (min (order :amount) (order2 :amount))
         order1-rest (withdraw-amount order fill-amount)
