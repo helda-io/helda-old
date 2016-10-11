@@ -2,6 +2,8 @@
   (:require [schema.core :as s])
   (:use [helda.meta.core])
   (:use [helda.helpers.response])
+
+  (:require [helda.assembly.core :refer :all])
   )
 
 (def amount-tolerance 0.1)
@@ -31,6 +33,13 @@
   (if-let [order2 (first stack)] (match-pair order order2))
   )
 
+(defn withdraw-amount [order amount]
+  (->> amount
+    (- (order :amount))
+    (assoc order :amount)
+    )
+  )
+
 (defn insert-order [order col]
   (if-not (is-filled order)
     (-> col
@@ -38,6 +47,7 @@
       (sort-by :price (if (is-buy order) < >))
       )
     col
+    )
   )
 
 (defn fill-order [order world changes]
@@ -66,7 +76,7 @@
           })
         )
         (assoc changes (stack-key order)
-          (insert-order order1-rest (-> order stack-key world))
+          (insert-order order (-> order stack-key world))
           )
       )
       changes
@@ -115,7 +125,7 @@
         :tag s/Keyword
         :amount s/Num
         :price s/Num
-        :cp: s/Str
+        :cp s/Str
         :buy-sell (s/enum :bid :offer)
         }
       :handler (fn [msg world]

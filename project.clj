@@ -8,6 +8,7 @@
     [org.clojure/core.async "0.2.391"]
     [prismatic/schema "1.1.3"]
     [com.novemberain/monger "3.0.2"]
+    [proto-repl "0.3.1"]
     ]
   :main ^:skip-aot helda.core
   :target-path "target/%s"
