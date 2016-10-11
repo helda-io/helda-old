@@ -30,10 +30,6 @@
   (world (stack-key order))
   )
 
-(defn opp-stack [order world]
-  (world (opp-stack-key order))
-  )
-
 (defn match-pair [order1 order2]
   (let [order1-price (order1 :price) order2-price (order2 :price)]
     (cond
@@ -60,8 +56,8 @@
 
 (defn fill-order [order world changes]
   (if-not (is-filled order)
-    (if-let [order2 (match-stack order
-        (opp-stack order (if changes changes world)))]
+    (if-let [order2 (match-stack
+      order ((or changes world) (opp-stack-key order)))]
       (let [
         fill-amount (min (order :amount) (order2 :amount))
         order1-rest (withdraw-amount order fill-amount)
@@ -75,14 +71,14 @@
               {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
               )
             (opp-stack-key order)
-              (->> (opp-stack order (if changes changes world))
+              (->> ((or changes world) (opp-stack-key order))
                 (remove #(= order2 %))
                 (insert-order order2-rest)
                 )
           })
         )
         (assoc changes (stack-key order)
-          (insert-order order1-rest (own-stack order world))
+          (insert-order order1-rest (-> order stack-key world))
           )
       )
       changes
