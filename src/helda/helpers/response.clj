@@ -23,3 +23,10 @@
 (s/defn save :- Response [response :- Response key :- s/Keyword value :- s/Any]
   (assoc-in response [:world key] value)
   )
+
+(s/defn save-changes :- Response [response :- Response changes :- {s/Keyword s/Any}]
+  (->> changes
+    (merge (response :world))
+    (assoc response :world)
+    )
+  )
