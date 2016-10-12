@@ -126,8 +126,11 @@
         :buy-sell (s/enum :buy :sell)
         }
       :handler (fn [msg world]
-        (-> (init-response :order)
-          (reply-msg (fill-order msg world nil))
+        (let [fill-response (fill-order msg world nil)]
+          (-> (init-response :order)
+            (save-changes fill-response)
+            (reply-field :fills (fill-response :fills))
+            )
           )
         )
       })
