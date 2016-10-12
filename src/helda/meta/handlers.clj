@@ -26,8 +26,11 @@
   (if-not (msg :tag) (throw (Exception. "Msg tag should be set")))
   (when (or (not (msg :world)) (= (msg :world) (meta :name)))
     (if-let [handler (get-in meta [:handlers (msg :tag)])]
-      ;todo organize as pipeline
-      ((handler :handler) (validate-msg handler (coerce-msg handler msg)) world)
+      (as-> msg request-msg
+        (coerce-msg handler request-msg)
+        (validate-msg handler request-msg)
+        ((handler :handler) request-msg world)
+        )
       (if-let [sys-handler (get-in meta [:sys-handlers (msg :tag)])]
         (sys-handler msg meta)
         )

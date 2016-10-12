@@ -52,32 +52,27 @@
 
 (defn fill-order [order world changes]
   (if-not (is-filled order)
-    (if-let [order2 (match-stack
-        order
-        ((or changes world) (opp-stack-key order))
-      )]
-      (let [
-        fill-amount (min (order :amount) (order2 :amount))
-        order1-rest (withdraw-amount order fill-amount)
-        order2-rest (withdraw-amount order2 fill-amount)
-        ]
-        (recur
-          order1-rest
-          world
-          {
-            :fills (conj (changes :fills)
-              {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
-              )
-            (opp-stack-key order)
-              (->> ((or changes world) (opp-stack-key order))
-                (remove #(= order2 %))
-                (insert-order order2-rest)
+    (let [opp-stack ((or changes world) (opp-stack-key order))]
+      (if-let [order2 (match-stack order opp-stack)]
+        (let [fill-amount (min (order :amount) (order2 :amount))]
+          (recur
+            (withdraw-amount order fill-amount)
+            world
+            {
+              :fills (conj (changes :fills)
+                {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
                 )
-          })
-        )
-        (assoc changes (stack-key order)
-          (insert-order order (-> order stack-key world))
+              (opp-stack-key order)
+                (->> opp-stack
+                  (remove #(= order2 %))
+                  (insert-order (withdraw-amount order2 fill-amount))
+                  )
+            })
           )
+          (assoc changes (stack-key order)
+            (insert-order order (-> order stack-key world))
+            )
+        )
       )
       changes
     )
