@@ -42,9 +42,10 @@
 
 (defn insert-order [order col]
   (if-not (is-filled order)
-    (-> col
-      (conj order)
-      (sort-by :price (if (is-buy order) < >))
+    (sort-by
+      :price
+      (if (is-buy order) < >)
+      (conj col order)
       )
     col
     )
@@ -99,7 +100,7 @@
       ; :schema s/Num
       })
     (add-handler {
-      :tag :place-order
+      :tag :order
       :input-msg {
         :sym "Symbol"
         :amount "Money amount"
@@ -109,28 +110,31 @@
         }
       :examples [
         {
-          :tag :place-order
+          :tag :order
           :amount 100
           :price 12.5
           :cp "CP1"
-          :buy-sell :offer
+          :buy-sell :buy
           }
         ]
       :msg-schema {
         :tag s/Keyword
+        :sym s/Str
         :amount s/Num
         :price s/Num
         :cp s/Str
-        :buy-sell (s/enum :bid :offer)
+        :buy-sell (s/enum :buy :sell)
         }
       :handler (fn [msg world]
-        (fill-order msg world nil)
+        (-> (init-response :order)
+          (reply-msg (fill-order msg world nil))
+          )
         )
       })
     )
   )
 
-(defn run-accounting [adapter]
+(defn run-oms [adapter]
   (-> (init-assembly adapter)
     (add-meta (create-meta))
     run-assembly
