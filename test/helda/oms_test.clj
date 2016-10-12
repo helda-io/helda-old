@@ -6,7 +6,7 @@
 
 (deftest matching-test
   (let
-    [order {
+    [order-buy {
       :tag :order
       :sym "IBM"
       :price 1.5
@@ -14,8 +14,17 @@
       :cp "Cp1"
       :buy-sell :buy
     }
+    order-sell {
+      :tag :order
+      :sym "IBM"
+      :price 1.5
+      :amount 1000
+      :cp "Cp1"
+      :buy-sell :sell
+    }
     engine (run-oms :embedded)]
-    (let [response (handle-msg engine order)]
+    (handle-msg engine order-buy)
+    (let [response (handle-msg engine order-sell)]
       (testing "World changes"
         )
       )
