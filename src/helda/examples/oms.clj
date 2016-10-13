@@ -51,6 +51,15 @@
     )
   )
 
+;todo
+(defn make-fill [order1 order2]
+
+  )
+
+(defn add-fill [order1 order2]
+
+  )
+
 (defn fill-order [order world changes]
   (if-not (is-filled order)
     (let [opp-stack ((or changes world) (opp-stack-key order))]
@@ -60,7 +69,7 @@
             (withdraw-amount order fill-amount)
             world
             {
-              :fills (conj (if changes (changes :fills) [])
+              :fills (conj (if changes (changes :fills) (world :fills))
                   {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
                   )
               (opp-stack-key order)
