@@ -51,9 +51,15 @@
     )
   )
 
-;todo
 (defn make-fill [order1 order2]
-
+  (let [fill-amount (min (order1 :amount) (order2 :amount))]
+    {
+      :amount fill-amount
+      :price (order1 :price)
+      :order1 (withdraw-amount order1 fill-amount)
+      :order2 (withdraw-amount order2 fill-amount)
+      }
+    )
   )
 
 (defn add-fill [order1 order2]
@@ -64,18 +70,16 @@
   (if-not (is-filled order)
     (let [opp-stack ((or changes world) (opp-stack-key order))]
       (if-let [order2 (match-stack order opp-stack)]
-        (let [fill-amount (min (order :amount) (order2 :amount))]
+        (let [fill (make-fill order order2)]
           (recur
-            (withdraw-amount order fill-amount)
+            (fill :order1)
             world
             {
-              :fills (conj (if changes (changes :fills) (world :fills))
-                  {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
-                  )
+              :fills (conj (if changes (changes :fills) (world :fills)) fill)
               (opp-stack-key order)
                 (->> opp-stack
                   (remove #(= order2 %))
-                  (insert-order (withdraw-amount order2 fill-amount))
+                  (insert-order (fill :order2))
                   )
             })
           )
@@ -111,6 +115,7 @@
     (add-handler {
       :tag :order
       :input-msg {
+        :id "Order Id"
         :sym "Symbol"
         :amount "Money amount"
         :price "Price"
@@ -120,6 +125,7 @@
       :examples [
         {
           :tag :order
+          :id 1
           :amount 100
           :price 12.5
           :cp "CP1"
@@ -128,6 +134,7 @@
         ]
       :msg-schema {
         :tag s/Keyword
+        :id s/Num
         :sym s/Str
         :amount s/Num
         :price s/Num

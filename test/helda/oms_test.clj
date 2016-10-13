@@ -7,6 +7,7 @@
 (deftest matching-test
   (let
     [order-buy {
+      :id 1
       :tag :order
       :sym "IBM"
       :price 1.5
@@ -15,6 +16,7 @@
       :buy-sell :buy
     }
     order-sell {
+      :id 2
       :tag :order
       :sym "IBM"
       :price 1.5
