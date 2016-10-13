@@ -21,10 +21,10 @@
 (defn match-pair [order1 order2]
   (let [order1-price (order1 :price) order2-price (order2 :price)]
     (cond
-      (= order1-price order2-price) true
-      (and (is-buy order1) (< order2-price order1-price)) true
-      (and (is-sell order1) (> order2-price order1-price)) true
-      :else false
+      (= order1-price order2-price) order2
+      (and (is-buy order1) (< order2-price order1-price)) order2
+      (and (is-sell order1) (> order2-price order1-price)) order2
+      :else nil
       )
     )
   )
@@ -60,9 +60,9 @@
             (withdraw-amount order fill-amount)
             world
             {
-              :fills (conj (changes :fills)
-                {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
-                )
+              :fills (conj (if changes (changes :fills) [])
+                  {:amount fill-amount :cp1 (order :cp) :cp2 (order2 :cp)}
+                  )
               (opp-stack-key order)
                 (->> opp-stack
                   (remove #(= order2 %))
