@@ -62,8 +62,8 @@
     )
   )
 
-(defn add-fill [order1 order2]
-
+(defn add-fill [fill world changes]
+  (conj (if changes (changes :fills) (world :fills)) fill)
   )
 
 (defn fill-order [order world changes]
@@ -75,7 +75,7 @@
             (fill :order1)
             world
             {
-              :fills (conj (if changes (changes :fills) (world :fills)) fill)
+              :fills (add-fill fill world changes)
               (opp-stack-key order)
                 (->> opp-stack
                   (remove #(= order2 %))
