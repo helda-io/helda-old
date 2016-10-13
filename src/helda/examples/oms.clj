@@ -62,8 +62,8 @@
     )
   )
 
-(defn add-fill [fill world changes]
-  (conj (if changes (changes :fills) (world :fills)) fill)
+(defn add-fill [fill changes]
+  (conj (if changes (changes :fills) []) fill)
   )
 
 (defn fill-order [order world changes]
@@ -75,7 +75,7 @@
             (fill :order1)
             world
             {
-              :fills (add-fill fill world changes)
+              :fills (add-fill fill changes)
               (opp-stack-key order)
                 (->> opp-stack
                   (remove #(= order2 %))
@@ -143,9 +143,14 @@
         }
       :handler (fn [msg world]
         (let [fill-response (fill-order msg world nil)]
-          (-> (init-response :order)
-            (save-changes fill-response)
-            (reply-field :fills (fill-response :fills))
+          (cond-> (init-response :order)
+            (fill-response :buy-stack)
+              (save :buy-stack (fill-response :buy-stack))
+            (fill-response :sell-stack)
+              (save :sell-stack (fill-response :sell-stack))
+            (fill-response :fills) (save :fills (conj (world :fills) (fill-response :fills)))
+            (fill-response :fills) (reply-field :fills (fill-response :fills))
+            (not (fill-response :fills)) (reply-field :fills [])
             )
           )
         )
