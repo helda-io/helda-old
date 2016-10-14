@@ -10,7 +10,7 @@
       :id 1
       :tag :order
       :sym "IBM"
-      :price 1.5
+      :price 15
       :amount 1000
       :cp "Cp1"
       :buy-sell :buy
@@ -19,7 +19,7 @@
       :id 2
       :tag :order
       :sym "IBM"
-      :price 1.5
+      :price 15
       :amount 1000
       :cp "Cp1"
       :buy-sell :sell

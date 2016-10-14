@@ -29,8 +29,13 @@
     )
   )
 
-(defn match-stack [order stack] ;we are trying only first because list sorted
-  (if-let [order2 (first stack)] (match-pair order order2))
+(defn match-stack [order order-stack] ;we are trying only first because list sorted
+  (some-> order-stack ; {price [orders]}
+    first  ; [price [orders]]
+    second ;  [orders]
+    first  ; order
+    (match-pair order)
+    )
   )
 
 (defn withdraw-amount [order amount]
@@ -40,14 +45,16 @@
     )
   )
 
-(defn insert-order [order col]
+(defn insert-order [order order-stack]
   (if-not (is-filled order)
-    (sort-by
-      :price
-      (if (is-buy order) < >)
-      (conj col order)
+    (if-not order-stack
+      (sorted-map (order :price) [order])
+      (->> order
+        (conj (order-stack (order :price)))
+        (assoc order-stack (order :price))
+        )
       )
-    col
+    order-stack
     )
   )
 
@@ -96,13 +103,13 @@
   (-> (init-meta :accounts)
     (add-field {
       :name :buy-stack
-      :default-value []
+      :default-value nil
       :description "Bid orders stack"
       ; :schema s/Num
       })
     (add-field {
       :name :sell-stack
-      :default-value []
+      :default-value nil
       :description "Ask orders stack"
       ; :schema s/Num
       })
