@@ -4,7 +4,7 @@
   "World storage protocol"
 
   (load-world [this] "Returns world")
-  (save-changes [this world] "Saving changes")
+  (save-changes [this changes] "Saving changes")
   )
 
 (deftype WorldStorageAtom [atom]
