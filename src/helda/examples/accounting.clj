@@ -43,7 +43,7 @@
       :name :accounting-entry-list
       :default-value []
       :description "List of accounting entries"
-      :schema s/Str
+      :schema [s/Any]
       })
     (add-handler {
       :tag :get-accounts
