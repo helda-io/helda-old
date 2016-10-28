@@ -15,6 +15,10 @@
       [:sys-handlers :fields-table]
       (fn [msg meta] (f/fields-table meta))
       )
+    (assoc-in
+      [:sys-handlers :lookup-fixture]
+      (fn [msg meta] (get-in meta [:fixtures (msg :fixture)]))
+      )
     )
   )
 
@@ -32,4 +36,4 @@
 
 (s/defn ^:always-validate add-fixture :- Meta [meta :- Meta fixture :- WorldFixture]
   (assoc-in meta [:fixtures (fixture :tag)] fixture)
-  )  
+  )
