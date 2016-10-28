@@ -9,7 +9,7 @@
   (load-world [this]
     (mc/find-one-as-map db "worlds" { :_id key })
     )
-  (save-world [this changes]
+  (save-changes [this changes]
     (mc/update db "worlds" {:_id key} (merge {:_id key} changes) {:upsert true})
     )
   )

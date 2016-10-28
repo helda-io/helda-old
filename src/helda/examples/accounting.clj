@@ -45,6 +45,16 @@
       :description "List of accounting entries"
       :schema [s/Any]
       })
+    (add-fixture {
+      :tag :sample1
+      :field-values {
+        :account-owner-equities -1000
+        :account-liabilites -500
+        :account-assets-bank 500
+        :account-assets-fixed 1000
+        :account-assets-cache 0
+        }
+      })
     (add-handler {
       :tag :get-accounts
       :handler (fn [msg world]
