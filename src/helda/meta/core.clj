@@ -29,3 +29,7 @@
 (s/defn add-handler [meta :- Meta handler :- Handler]
   (h/add-handler meta handler)
   )
+
+(s/defn ^:always-validate add-fixture :- Meta [meta :- Meta fixture :- WorldFixture]
+  (assoc-in meta [:fixtures (fixture :tag)] fixture)
+  )  
