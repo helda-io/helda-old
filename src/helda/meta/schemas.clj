@@ -26,7 +26,7 @@
     :default-value s/Any
     (optional-key :schema) s/Any
     ;second parameter is schema (if provided)
-    (optional-key :validator) (=> (maybe Message) [Response s/Any])
+    (optional-key :validator) (=> (maybe Message) [Response])
   })
 
 (defschema Handler{

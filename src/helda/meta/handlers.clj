@@ -25,9 +25,14 @@
 
 (defn validate-results [response meta]
   (loop [fields (vals (meta :fields)) field (first fields)]
-    (if (and field (field :schema))
+    (if field
       (if-let [value (get-in response [:world (field :name)])]
-        (s/validate (field :schema) value) ;todo we can provide more info here
+        (if-let [validator (field :validator)]
+          (validator value)
+          (if-let [schema (field :schema)]
+            (s/validate schema value) ;todo we can provide more info here
+            )
+          )
         )
       )
     (if-let [next-fields (next fields)]
