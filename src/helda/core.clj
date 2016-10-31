@@ -2,6 +2,7 @@
   (:gen-class)
   (:require [helda.examples.accounting :as accounting])
   (:require [helda.assembly.engines :refer :all])
+  (:require [clojure.repl :refer [root-cause pst]])
   )
 
 (def cmd-prompt "helda > ")
@@ -15,7 +16,11 @@
     (doseq [ln (line-seq (java.io.BufferedReader. *in*))]
       (try
         (println (handle-msg engine ln))
-        (catch Exception e (println (str "Got error: " (.getMessage e))))
+        (catch Exception e
+          (println (str "Got error: " (.getMessage e) " \n" e " \n"
+            (apply str (interpose "\n" (.getStackTrace e))))
+            )
+          )
         )
       (print cmd-prompt)
       (flush)
