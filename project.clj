@@ -9,6 +9,7 @@
     [prismatic/schema "1.1.3"]
     [com.novemberain/monger "3.0.2"]
     [proto-repl "0.3.1"]
+    [jline "0.9.94"]
     ]
   :main ^:skip-aot helda.core
   :target-path "target/%s"
