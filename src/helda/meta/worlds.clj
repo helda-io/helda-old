@@ -13,9 +13,9 @@
       :description "List of worlds"
       })
     (add-field {
-      :name :worlds-description
+      :name :worlds-meta
       :default-value
-        (zipmap (map #(% :name) meta-list) (map #(% :description) meta-list))
+        (zipmap (map #(% :name) meta-list) meta-list)
       :description "Worlds description per key"
       })
 
@@ -26,33 +26,8 @@
       :handler (fn [msg world]
         (reply-msg {} {
           :worlds-list (world :worlds-list)
-          :worlds-description (world :worlds-description)
+          :worlds-meta (world :worlds-meta)
           })
-        )
-      })
-    (add-handler {
-      :tag :add-world
-      :input-msg {
-        :world-name "World name"
-        :worlds-description "World description"
-        }
-      :msg-schema {
-        :tag s/Keyword
-        :world-name s/Keyword
-        :worlds-description s/Str
-      }
-      :handler (fn [msg world]
-        (-> (init-response :world-meta-reply)
-          (save :worlds-list (conj (world :worlds-list) (msg :world-name)))
-          (save
-            :worlds-description
-            (assoc
-              (world :worlds-description)
-              (msg :world-name)
-              (msg :worlds-description)
-              )
-            )
-          )
         )
       })
     )
