@@ -9,6 +9,11 @@
   (assoc-in meta [:handlers (handler :tag)] handler)
   )
 
+(s/defn ^:always-validate add-alias :- Meta
+  [meta :- Meta source :- s/Keyword alias :- s/Keyword]
+  (assoc-in meta [:handlers alias] (get-in meta [:handlers source]))
+  )
+
 (defn coerce-msg [msg handler]
   (if (handler :coerce)
     ((handler :coerce) msg (handler :msg-schema))

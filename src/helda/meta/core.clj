@@ -34,6 +34,10 @@
   (h/add-handler meta handler)
   )
 
+(s/defn add-alias :- Meta [meta :- Meta source :- s/Keyword alias :- s/Keyword]
+  (h/add-alias meta source alias)
+  )
+
 (s/defn ^:always-validate add-fixture :- Meta [meta :- Meta fixture :- WorldFixture]
   (assoc-in meta [:fixtures (fixture :tag)] fixture)
   )

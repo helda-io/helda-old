@@ -30,5 +30,6 @@
           })
         )
       })
+    (add-alias :worlds :help)  
     )
   )
