@@ -1,8 +1,8 @@
 #!/bin/sh
-CLASSPATH=src:test:resources:data:`lein classpath`
+CLASSPATH=src:resources:`lein classpath`
 
-for f in lib/*.jar; do
-    CLASSPATH=$CLASSPATH:$f
-done
+# for f in lib/*.jar; do
+    # CLASSPATH=$CLASSPATH:$f
+# done
 
-java -Xmx4G -cp $CLASSPATH jline.ConsoleRunner clojure.main -i bin/repl.clj
+java -Xmx4G -cp $CLASSPATH jline.ConsoleRunner clojure.main -i scripts/$1-repl.clj
