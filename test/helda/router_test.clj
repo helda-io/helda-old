@@ -1,6 +1,5 @@
 (ns helda.router-test
   (:require [clojure.test :refer :all]
-            [helda.core :refer :all]
             [helda.assembly.engines :refer :all]
             [helda.examples.accounting :as accounting]))
 
