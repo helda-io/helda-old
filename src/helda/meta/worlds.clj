@@ -25,11 +25,15 @@
         }
       :handler (fn [msg world]
         (reply-msg {} {
-          :worlds-list (world :worlds-list)
-          :worlds-meta (world :worlds-meta)
+          :worlds (zipmap
+            (world :worlds-list)
+            (-> (map #(get-in world [:worlds-meta % :handlers]) (world :worlds-list))
+              
+              )
+            )
           })
         )
       })
-    (add-alias :worlds :help)  
+    (add-alias :worlds :help)
     )
   )
