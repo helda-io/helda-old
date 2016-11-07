@@ -9,10 +9,10 @@
     handlers-map (get-in world-meta [:worlds-meta world-tag :handlers])
     tags (keys handlers-map)
   ]
-    (zipmap
+    {:commands (zipmap
       tags
       (map #(dissoc (handlers-map %) :tag :handler) tags)
-      )
+      )}
     )
   )
 
