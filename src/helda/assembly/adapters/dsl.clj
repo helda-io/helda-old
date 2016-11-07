@@ -64,6 +64,9 @@
     )
 
   (convert-results [this msg]
-    msg
+    (reduce #(str %1 "\n" %2)
+      (str "========== Reply: " (msg :tag) " ==========")
+      (map #(str % " : " (msg %)) (keys (dissoc msg :tag)))
+      )
     )
   )
