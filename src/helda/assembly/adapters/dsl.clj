@@ -61,9 +61,9 @@
     (let [splitter (str "\n" (apply str (repeat level "\t")))]
       (reduce
         #(str %1 splitter %2)
-        splitter
+        ""
         (map
-          #(str % " : " (render-attr (get attr %) (inc level)))
+          #(str % ": " (render-attr (get attr %) (inc level)))
           (keys attr)
           )
         )
@@ -82,7 +82,7 @@
   (convert-results [this msg]
     (reduce #(str %1 "\n" %2)
       (str "========== Reply: " (msg :tag) " ==========")
-      (map #(str % " : " (render-attr (msg %) 0)) (keys (dissoc msg :tag)))
+      (map #(str % ": " (render-attr (msg %) 1)) (keys (dissoc msg :tag)))
       )
     )
   )
