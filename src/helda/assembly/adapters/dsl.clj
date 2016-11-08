@@ -1,5 +1,5 @@
 (ns helda.assembly.adapters.dsl
-  (:require [clojure.string :refer [split starts-with?]])
+  (:require [clojure.string :refer [split starts-with? capitalize]])
   (:require [helda.assembly.adapters.core :refer :all])
   )
 
@@ -63,7 +63,7 @@
         #(str %1 splitter %2)
         ""
         (map
-          #(str % ": " (render-attr % (attr %) (inc level)))
+          #(str (name %) ": " (render-attr % (attr %) (inc level)))
           (keys attr)
           )
         )
@@ -81,8 +81,8 @@
 
   (convert-results [this msg]
     (reduce #(str %1 "\n" %2)
-      (str "========== " (msg :tag) " ==========")
-      (map #(str % ": " (render-attr % (msg %) 1)) (keys (dissoc msg :tag)))
+      (str "========== " (name (msg :tag)) " ==========")
+      (map #(str (name %) ": " (render-attr % (msg %) 1)) (keys (dissoc msg :tag)))
       )
     )
   )
