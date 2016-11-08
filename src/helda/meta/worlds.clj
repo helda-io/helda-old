@@ -9,10 +9,10 @@
     handlers-map (get-in world-meta [:worlds-meta world-tag :handlers])
     tags (keys handlers-map)
   ]
-    {:commands (zipmap
+    (zipmap
       tags
       (map #(dissoc (handlers-map %) :tag :handler) tags)
-      )}
+      )
     )
   )
 
@@ -32,21 +32,22 @@
       })
 
     (add-handler {
-      :tag :worlds
+      :tag :commands
       :handler (fn [msg world]
-        (reply-msg
-          (init-response :help)
-          {
-          :worlds (zipmap
-            (world :worlds-list)
-            (map
-              #(trim-handlers world %)
+        (-> (init-response :commands)
+          (reply-field
+            :commands
+            (zipmap
               (world :worlds-list)
+              (map
+                #(trim-handlers world %)
+                (world :worlds-list)
+                )
               )
             )
-          })
+          )
         )
       })
-    (add-alias :worlds :help)
+    (add-alias :commands :help)
     )
   )
