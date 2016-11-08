@@ -56,14 +56,14 @@
     )
   )
 
-(defn render-attr [attr level]
-  (if (map? attr)
+(defn render-attr [key attr level]
+  (if (and (map? attr) (not (= key :msg-schema)))
     (let [splitter (str "\n" (apply str (repeat level "\t")))]
       (reduce
         #(str %1 splitter %2)
         ""
         (map
-          #(str % ": " (render-attr (get attr %) (inc level)))
+          #(str % ": " (render-attr % (attr %) (inc level)))
           (keys attr)
           )
         )
@@ -81,8 +81,8 @@
 
   (convert-results [this msg]
     (reduce #(str %1 "\n" %2)
-      (str "========== Reply: " (msg :tag) " ==========")
-      (map #(str % ": " (render-attr (msg %) 1)) (keys (dissoc msg :tag)))
+      (str "========== " (msg :tag) " ==========")
+      (map #(str % ": " (render-attr % (msg %) 1)) (keys (dissoc msg :tag)))
       )
     )
   )
