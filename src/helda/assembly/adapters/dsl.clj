@@ -58,7 +58,7 @@
 
 (defn render-attr [key attr level]
   (if (and (map? attr) (not (= key :msg-schema)))
-    (let [splitter (str "\n" (apply str (repeat level "\t")))]
+    (let [splitter (str "\n" (apply str (repeat level "  ")))]
       (reduce
         #(str %1 splitter %2)
         ""
