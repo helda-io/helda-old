@@ -5,10 +5,13 @@
 
 (deftest router-test
   (let [
-    engine (accounting/run-accounting :repl)
-    msg "accounting-entry debit \"account-assets-fixed\"
-    credit \"account-owner-equities\" amount 1000"
-    ]
+    engine (accounting/run-accounting :embedded)
+    msg {
+      :tag :accounting-entry
+      :debit :account-assets-fixed
+      :credit :account-owner-equities
+      :amount 1000
+    }]
     (testing "Checking router results"
       (is (= 1 (count (handle-msg engine msg))))
       )
@@ -17,13 +20,14 @@
 
 (deftest worlds-app-test
   (let [
-    engine (accounting/run-accounting :repl)
+    engine (accounting/run-accounting :embedded)
     result (do
-      (handle-msg engine "worlds")
+      (handle-msg engine {:tag :commands})
       )
     ]
+    (println (str ">>>" (result :commands)))
     (testing "Checking router results"
-      (is (= :accounts (first (result :worlds-list))))
+      (is (= :accounts (first (first (result :commands)))))
       )
     )
   )
