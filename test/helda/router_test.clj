@@ -25,7 +25,6 @@
       (handle-msg engine {:tag :commands})
       )
     ]
-    (println (str ">>>" (result :commands)))
     (testing "Checking router results"
       (is (= :accounts (first (first (result :commands)))))
       )
