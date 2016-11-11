@@ -72,6 +72,35 @@
     )
   )
 
+(defn map2seq [m level] (map #(conj % level) (seq m)))
+
+(defn tuple-key [tuple] (nth tuple 0))
+(defn tuple-value [tuple] (nth tuple 1))
+(defn nested-map? [tuple] (map? (tuple-value tuple)))
+(defn tuple-level [tuple] (nth tuple 2))
+
+(defn process-attr [in out]
+  (if-let [tuple (first in)]
+    (recur
+      (next in)
+      (str out (tuple-key tuple))
+      )
+    out
+    )
+  )
+
+
+(def msg {:tag :commands,
+  :commands {:accounts
+    {
+      :get-accounts {},
+      :accounting-entry {:input-msg {:debit "Debit account field name", :credit "Credit account field name", :amount "Money amount"}, :examples [{:tag :accounting-entry, :debit :account-assets-fixed,
+  :credit :account-owner-equities, :amount 1000}]}}}})
+
+;{:key :tag :value :commands :level 1} {:key :commands :level 1} {:key :accounts :level 2} {get-accounts 3}
+
+(process-attr (map2seq msg 0) "")
+
 (deftype DslMsgAdapter []
   MsgAdapter
 
@@ -80,9 +109,10 @@
     )
 
   (convert-results [this msg]
-    (reduce #(str %1 "\n" %2)
-      (str "========== " (name (msg :tag)) " ==========")
-      (map #(str (name %) ": " (render-attr % (msg %) 1)) (keys (dissoc msg :tag)))
-      )
+    (process-attr (seq msg) "")
+    ;(reduce #(str %1 "\n" %2)
+      ;(str "========== " (name (msg :tag)) " ==========")
+      ;(map #(str (name %) ": " (render-attr % (msg %) 1)) (keys (dissoc msg :tag)))
+    ;  )
     )
   )
