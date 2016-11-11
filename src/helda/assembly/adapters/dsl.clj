@@ -79,27 +79,38 @@
 (defn nested-map? [tuple] (map? (tuple-value tuple)))
 (defn tuple-level [tuple] (nth tuple 2))
 
+(defn tuple-indent [tuple]
+  (apply str (repeat (tuple-level tuple) "  "))
+  )
+
 (defn process-attr [in out]
   (if-let [tuple (first in)]
     (recur
-      (next in)
-      (str out (tuple-key tuple))
+      (if (nested-map? tuple)
+        (concat
+          (map2seq (tuple-value tuple) (inc (tuple-indent tuple)))
+          (next in)
+          )
+        (next in)
+        )
+      (str out (tuple-indent tuple) (tuple-key tuple) ": "
+        (if (nested-map? tuple) "" (tuple-value tuple)) "\n")
       )
     out
     )
   )
 
 
-(def msg {:tag :commands,
-  :commands {:accounts
-    {
-      :get-accounts {},
-      :accounting-entry {:input-msg {:debit "Debit account field name", :credit "Credit account field name", :amount "Money amount"}, :examples [{:tag :accounting-entry, :debit :account-assets-fixed,
-  :credit :account-owner-equities, :amount 1000}]}}}})
+; (def msg {:tag :commands,
+  ; :commands {:accounts
+    ; {
+      ; :get-accounts {},
+      ; :accounting-entry {:input-msg {:debit "Debit account field name", :credit "Credit account field name", :amount "Money amount"}, :examples [{:tag :accounting-entry, :debit :account-assets-fixed,
+  ; :credit :account-owner-equities, :amount 1000}]}}}})
 
 ;{:key :tag :value :commands :level 1} {:key :commands :level 1} {:key :accounts :level 2} {get-accounts 3}
 
-(process-attr (map2seq msg 0) "")
+; (process-attr (map2seq msg 0) "")
 
 (deftype DslMsgAdapter []
   MsgAdapter
