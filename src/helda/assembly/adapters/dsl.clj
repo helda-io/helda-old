@@ -56,22 +56,6 @@
     )
   )
 
-(defn render-attr [key attr level]
-  (if (and (map? attr) (not (= key :msg-schema)))
-    (let [splitter (str "\n" (apply str (repeat level "  ")))]
-      (reduce
-        #(str %1 splitter %2)
-        ""
-        (map
-          #(str (name %) ": " (render-attr % (attr %) (inc level)))
-          (keys attr)
-          )
-        )
-      )
-    attr
-    )
-  )
-
 (defn map2seq [m level] (map #(conj % level) (seq m)))
 
 (defn tuple-key [tuple] (nth tuple 0))
@@ -83,12 +67,12 @@
   (apply str (repeat (tuple-level tuple) "  "))
   )
 
-(defn process-attr [in out]
+(defn render-attr [in out]
   (if-let [tuple (first in)]
     (recur
       (if (nested-map? tuple)
         (concat
-          (map2seq (tuple-value tuple) (inc (tuple-indent tuple)))
+          (map2seq (tuple-value tuple) (inc (tuple-level tuple)))
           (next in)
           )
         (next in)
@@ -101,16 +85,14 @@
   )
 
 
-; (def msg {:tag :commands,
-  ; :commands {:accounts
-    ; {
-      ; :get-accounts {},
-      ; :accounting-entry {:input-msg {:debit "Debit account field name", :credit "Credit account field name", :amount "Money amount"}, :examples [{:tag :accounting-entry, :debit :account-assets-fixed,
-  ; :credit :account-owner-equities, :amount 1000}]}}}})
+(def msg {:tag :commands,
+  :commands {:accounts
+    {
+      :get-accounts {},
+      :accounting-entry {:input-msg {:debit "Debit account field name", :credit "Credit account field name", :amount "Money amount"}, :examples [{:tag :accounting-entry, :debit :account-assets-fixed,
+  :credit :account-owner-equities, :amount 1000}]}}}})
 
-;{:key :tag :value :commands :level 1} {:key :commands :level 1} {:key :accounts :level 2} {get-accounts 3}
-
-; (process-attr (map2seq msg 0) "")
+(render-attr (map2seq msg 0) "")
 
 (deftype DslMsgAdapter []
   MsgAdapter
@@ -120,10 +102,6 @@
     )
 
   (convert-results [this msg]
-    (process-attr (seq msg) "")
-    ;(reduce #(str %1 "\n" %2)
-      ;(str "========== " (name (msg :tag)) " ==========")
-      ;(map #(str (name %) ": " (render-attr % (msg %) 1)) (keys (dissoc msg :tag)))
-    ;  )
+    (render-attr (map2seq msg 0) "")
     )
   )
