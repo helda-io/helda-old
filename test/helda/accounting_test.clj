@@ -57,7 +57,6 @@
     meta (create-meta)
     world (seed-world meta)
     ]
-    ; (println (handle {:tag :lookup-fixture :fixture :sample1} meta world))
     (testing "Sys-handlers checking"
       (is (= 6 (count (handle {:tag :fields-list} meta world))))
       (is (= 6 (count (handle {:tag :fields-table} meta world))))
